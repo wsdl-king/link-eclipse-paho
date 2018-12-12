@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: link
+  profiles:
+    active: '@project.env@'
+
+---
+# 开发环境配置 dev
+
+server:
+  port: 8761
+spring:
+  profiles: dev
+  output:
+     ansi:
+       enabled: ALWAYS
+---
+# 生产环境配置 prod
+server:
+  port: 8762
+spring:
+  profiles: prod
+  output:
+     ansi:
+       enabled: ALWAYS

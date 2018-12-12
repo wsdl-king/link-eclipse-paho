@@ -98,6 +98,9 @@ public class ByteUtils {
         return stringBuilder.toString();
     }
 
+    /**
+     * 16进制的String字符串去0x位以后转成byte数组
+     * */
     public static byte[] hexStringToBytes(String hexString) {
         if (hexString == null || hexString.equals("")) {
             return new byte[0];
