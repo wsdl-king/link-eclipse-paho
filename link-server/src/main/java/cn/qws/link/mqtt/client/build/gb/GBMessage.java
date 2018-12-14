@@ -6,6 +6,7 @@ import com.qws.link.packet.base.BaseHeader;
 import com.qws.link.packet.base.BasePacket;
 import com.qws.link.packet.base.GBHeader;
 import com.qws.link.packet.base.GBPacket;
+import com.qws.link.packet.realtime.CarInfoPacket;
 
 import java.io.Serializable;
 
@@ -37,10 +38,6 @@ public class GBMessage extends LinkMessage implements Serializable {
     /**
      * mqtt拿到的数据,解锁为实体
      */
-    public void build() {
-
-    }
-
     public Integer getLength() {
         return length;
     }
@@ -63,6 +60,8 @@ public class GBMessage extends LinkMessage implements Serializable {
      */
     @Override
     public LinkMessage build(byte[] bytes) {
+         this.gbHeader= new GBHeader(bytes);
+         this.gbPacket=new CarInfoPacket();
         return new GBMessage(gbHeader, gbPacket);
     }
 }

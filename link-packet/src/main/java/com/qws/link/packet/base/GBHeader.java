@@ -46,6 +46,10 @@ public class GBHeader implements BaseHeader {
         this.dataLength = dataLength;
     }
 
+    public GBHeader(byte[] bytes){
+        build(bytes);
+    }
+
 
     public String getBegin() {
         return begin;
