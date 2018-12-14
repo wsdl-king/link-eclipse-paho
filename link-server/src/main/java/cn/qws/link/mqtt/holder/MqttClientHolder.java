@@ -1,7 +1,7 @@
 package cn.qws.link.mqtt.holder;
 
 import cn.qws.link.mqtt.client.MqClient;
-import cn.qws.link.mqtt.client.build.MessageBuilder;
+import cn.qws.link.mqtt.client.build.MqMessageBuilder;
 import cn.qws.link.mqtt.client.build.gb.GBMessage;
 import com.qws.link.packet.base.GBHeader;
 import com.qws.link.packet.base.GBPacket;
@@ -82,7 +82,7 @@ public class MqttClientHolder {
         }
         try {
             //构建最终的请求体
-            MqttMessage mqttMessage = MessageBuilder.getInstance().buildMessage(new GBMessage(gbHeader, gbPacket));
+            MqttMessage mqttMessage = MqMessageBuilder.getInstance().buildMessage(new GBMessage(gbHeader, gbPacket));
             mqttMessage.setQos(qos);
             mqClient.getMqttClient().publish(topic, mqttMessage);
             //发送给mqtt服务器
