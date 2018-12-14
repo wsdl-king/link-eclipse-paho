@@ -8,13 +8,13 @@ import com.qws.link.packet.base.BasePacket;
  * @note
  * @since 18-12-14 16:01 by jdk 1.8
  */
-public abstract    class linkMessage {
+public abstract    class LinkMessage {
 
     private BaseHeader baseHeader;
     private BasePacket basePacket;
 
 
-    public linkMessage(BaseHeader baseHeader, BasePacket basePacket) {
+    public LinkMessage(BaseHeader baseHeader, BasePacket basePacket) {
         this.baseHeader = baseHeader;
         this.basePacket = basePacket;
 
@@ -27,6 +27,6 @@ public abstract    class linkMessage {
 
     public  abstract   byte[] unbuild(BaseHeader baseHeader, BasePacket basePacket);
 
-    public  abstract   linkMessage  build(byte[] bytes);
+    public  abstract   LinkMessage  build(byte[] bytes);
 
 }

@@ -1,6 +1,6 @@
 package cn.qws.link.mqtt.client.build;
 
-import cn.qws.link.mqtt.client.build.message.linkMessage;
+import cn.qws.link.mqtt.client.build.message.LinkMessage;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 /**
@@ -24,7 +24,7 @@ public class MqMessageBuilder {
     }
 
 
-     public  MqttMessage buildMessage(linkMessage linkMessage){
+     public  MqttMessage buildMessage(LinkMessage linkMessage){
         return  new MqttMessage(linkMessage.finalUnBuild());
 
       }

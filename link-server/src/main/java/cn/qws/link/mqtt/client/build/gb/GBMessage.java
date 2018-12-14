@@ -1,7 +1,7 @@
 package cn.qws.link.mqtt.client.build.gb;
 
 
-import cn.qws.link.mqtt.client.build.message.linkMessage;
+import cn.qws.link.mqtt.client.build.message.LinkMessage;
 import com.qws.link.packet.base.BaseHeader;
 import com.qws.link.packet.base.BasePacket;
 import com.qws.link.packet.base.GBHeader;
@@ -11,10 +11,10 @@ import java.io.Serializable;
 
 /**
  * @author qiwenshuai
- * @note 国标协议 最终构建类
+ * @note 国标协议 最终构建类LinkMessage
  * @since 18-12-14 14:10 by jdk 1.8
  */
-public class GBMessage extends linkMessage implements Serializable {
+public class GBMessage extends LinkMessage implements Serializable {
     /**
      * 国标数据头
      */
@@ -62,7 +62,7 @@ public class GBMessage extends linkMessage implements Serializable {
      * 解封成我的国标信息类体
      */
     @Override
-    public linkMessage build(byte[] bytes) {
+    public LinkMessage build(byte[] bytes) {
         return new GBMessage(gbHeader, gbPacket);
     }
 }
