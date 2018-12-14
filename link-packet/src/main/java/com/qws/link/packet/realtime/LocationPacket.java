@@ -2,14 +2,15 @@ package com.qws.link.packet.realtime;
 
 
 import com.qws.link.ByteUtils;
-import com.qws.link.tbox.common.base.BasePacket;
+import com.qws.link.packet.base.BasePacket;
+import com.qws.link.packet.base.GBPacket;
 
 import java.io.Serializable;
 
 /**
  * 位置数据包
  */
-public class LocationPacket implements BasePacket,Serializable{
+public class LocationPacket implements GBPacket,Serializable{
 	private static final long serialVersionUID = -3594577639324328409L;
 	/**0 有效定位 1无效定位*/
 	private Integer status;

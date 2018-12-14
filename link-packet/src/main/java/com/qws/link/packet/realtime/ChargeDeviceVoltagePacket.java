@@ -1,7 +1,9 @@
 package com.qws.link.packet.realtime;
 
 import com.qws.link.ByteUtils;
-import com.qws.link.tbox.common.base.BasePacket;
+import com.qws.link.packet.base.BasePacket;
+import com.qws.link.packet.base.GBPacket;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,7 +12,7 @@ import java.util.List;
 /**
  *可充电储能装置电压数据
  */
-public class ChargeDeviceVoltagePacket implements BasePacket,Serializable{
+public class ChargeDeviceVoltagePacket implements GBPacket,Serializable{
 	/**子系统个数*/
 	private Integer sysNum;
 	/**可充电储能子系统电压信息列表*/

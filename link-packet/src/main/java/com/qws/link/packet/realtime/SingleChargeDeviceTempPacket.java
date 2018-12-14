@@ -1,7 +1,8 @@
 package com.qws.link.packet.realtime;
 
 import com.qws.link.ByteUtils;
-import com.qws.link.tbox.common.base.BasePacket;
+import com.qws.link.packet.base.BasePacket;
+import com.qws.link.packet.base.GBPacket;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -10,7 +11,7 @@ import java.util.List;
 /**
  * 可充电储能子系统温度信息
  */
-public class SingleChargeDeviceTempPacket implements BasePacket,Serializable{
+public class SingleChargeDeviceTempPacket implements GBPacket,Serializable{
 	/**系统编号*/
 	private Integer sysNo;
 	/**探针总数*/

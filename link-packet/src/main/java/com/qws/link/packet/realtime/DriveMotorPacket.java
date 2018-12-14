@@ -2,7 +2,8 @@ package com.qws.link.packet.realtime;
 
 
 import com.qws.link.ByteUtils;
-import com.qws.link.tbox.common.base.BasePacket;
+import com.qws.link.packet.base.BasePacket;
+import com.qws.link.packet.base.GBPacket;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -12,7 +13,7 @@ import java.util.List;
 /**
  * 驱动电机数据包
  */
-public class DriveMotorPacket implements BasePacket,Serializable{
+public class DriveMotorPacket implements GBPacket,Serializable{
 	/**驱动电机个数*/
 	private Integer num;
 	/**驱动电机总成信息列表*/

@@ -2,14 +2,15 @@ package com.qws.link.packet.realtime;
 
 
 import com.qws.link.ByteUtils;
-import com.qws.link.tbox.common.base.BasePacket;
+import com.qws.link.packet.base.BasePacket;
+import com.qws.link.packet.base.GBPacket;
 
 import java.io.Serializable;
 
 /**
  * 极值数据包
  */
-public class ExtremumPacket implements BasePacket,Serializable{
+public class ExtremumPacket implements GBPacket,Serializable{
 	private static final long serialVersionUID = -5231142837709202694L;
 	/** 最高电压电池子系统号 “0xFE”表示异常，“0xFF”表示无效 范围：1至250*/
 	private Integer highestVoltageCellsNo;

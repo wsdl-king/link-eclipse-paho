@@ -1,7 +1,8 @@
 package com.qws.link.packet.realtime;
 
 import com.qws.link.ByteUtils;
-import com.qws.link.tbox.common.base.BasePacket;
+import com.qws.link.packet.base.BasePacket;
+import com.qws.link.packet.base.GBPacket;
 import com.qws.link.packet.warn.CarWarnCommonPacket;
 import java.io.Serializable;
 import java.util.Arrays;
@@ -9,7 +10,7 @@ import java.util.Arrays;
 /**
  * 告警数据包
  */
-public class CarWarnPacket implements BasePacket,Serializable{
+public class CarWarnPacket implements GBPacket,Serializable{
 	private Integer length=0;
 	/** 最高报警等级 */
 	private Integer warnLevel;

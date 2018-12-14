@@ -14,6 +14,12 @@ spring:
   output:
      ansi:
        enabled: ALWAYS
+mqtt:
+  username: qws
+  password: a123456
+  host: tcp://127.0.0.1:1883
+  clientId: 0
+
 ---
 # 生产环境配置 prod
 server:

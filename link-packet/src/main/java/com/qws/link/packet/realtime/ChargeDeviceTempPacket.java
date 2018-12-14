@@ -1,7 +1,8 @@
 package com.qws.link.packet.realtime;
 
 import com.qws.link.ByteUtils;
-import com.qws.link.tbox.common.base.BasePacket;
+import com.qws.link.packet.base.BasePacket;
+import com.qws.link.packet.base.GBPacket;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -11,7 +12,7 @@ import java.util.List;
 /**
  * 可充电储能装置温度
  */
-public class ChargeDeviceTempPacket implements BasePacket,Serializable{
+public class ChargeDeviceTempPacket implements GBPacket,Serializable{
 	private static final long serialVersionUID = 7887048097309842642L;
 	/**子系统个数*/
 	private Integer sysNum;

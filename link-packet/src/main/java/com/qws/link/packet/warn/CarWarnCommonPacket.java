@@ -2,9 +2,10 @@ package com.qws.link.packet.warn;
 
 
 import com.qws.link.ByteUtils;
-import com.qws.link.tbox.common.base.BasePacket;
+import com.qws.link.packet.base.BasePacket;
+import com.qws.link.packet.base.GBPacket;
 
-public class CarWarnCommonPacket  extends BaseWarnPacket  implements BasePacket {
+public class CarWarnCommonPacket  extends BaseWarnPacket  implements GBPacket {
 	/**1：温度差异报警；0：正常*/
 	private Integer tempDiff;
 	/**1：电池高温报警；0：正常*/

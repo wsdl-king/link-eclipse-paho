@@ -1,14 +1,15 @@
 package com.qws.link.packet.realtime;
 
 import com.qws.link.ByteUtils;
-import com.qws.link.tbox.common.base.BasePacket;
+import com.qws.link.packet.base.BasePacket;
+import com.qws.link.packet.base.GBPacket;
 
 import java.io.Serializable;
 
 /**
  * 驱动电机信息数据包
  */
-public class DriveMotorInfoPacket implements BasePacket,Serializable{
+public class DriveMotorInfoPacket implements GBPacket,Serializable{
 	/** 驱动电机顺序号，有效值范围1～253  */
 	private Integer motorNo;
 	/** 驱动电机状态 0x01：耗电；0x02：发电；0x03：关闭状态；0x04：准备状态“0xFE”表示异常，“0xFF”表示无效。 范围：0至65531*/

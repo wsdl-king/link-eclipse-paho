@@ -2,14 +2,14 @@ package com.qws.link.packet.realtime;
 
 
 import com.qws.link.ByteUtils;
-import com.qws.link.tbox.common.base.BasePacket;
+import com.qws.link.packet.base.GBPacket;
 
 import java.io.Serializable;
 
 /**
  * 车辆信息数据包
  */
-public class CarInfoPacket implements BasePacket,Serializable{
+public class CarInfoPacket implements GBPacket,Serializable{
 	private static final long serialVersionUID = -2067986491147110602L;
 	/** 车辆状态 0x01：车辆启动状态；0x02：熄火；0x03：其他状态；“0xFE”表示异常，“0xFF”表示无效。  */
 	private Integer carStatus;
