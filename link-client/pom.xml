@@ -11,5 +11,11 @@
 
     <artifactId>link-client</artifactId>
 
-
+   <dependencies>
+       <dependency>
+           <groupId>com.qws.mqtt</groupId>
+           <artifactId>link-packet</artifactId>
+           <version>1.0-SNAPSHOT</version>
+       </dependency>
+   </dependencies>
 </project>

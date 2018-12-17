@@ -1,4 +1,4 @@
-package cn.qws.link.mqtt.client.config;
+package com.qws.link.mqtt.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
