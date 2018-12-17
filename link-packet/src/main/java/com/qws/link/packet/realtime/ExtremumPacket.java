@@ -2,8 +2,7 @@ package com.qws.link.packet.realtime;
 
 
 import com.qws.link.ByteUtils;
-import com.qws.link.packet.base.BasePacket;
-import com.qws.link.packet.base.GBPacket;
+import com.qws.link.packet.base.pakcet.GBPacket;
 
 import java.io.Serializable;
 

@@ -1,4 +1,4 @@
-package com.qws.link.packet.base;
+package com.qws.link.packet.base.header;
 
 /**
  * @author qiwenshuai

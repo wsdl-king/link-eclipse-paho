@@ -2,7 +2,7 @@
 //
 //import com.qws.link.ByteUtils;
 //import com.qws.link.tbox.common.PackageConstant;
-//import com.qws.link.packet.base.BasePacket;
+//import com.qws.link.packet.base.pakcet.BasePacket;
 //import org.slf4j.Logger;
 //import org.slf4j.LoggerFactory;
 //

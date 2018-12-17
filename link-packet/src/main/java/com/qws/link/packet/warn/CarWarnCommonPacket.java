@@ -2,8 +2,7 @@ package com.qws.link.packet.warn;
 
 
 import com.qws.link.ByteUtils;
-import com.qws.link.packet.base.BasePacket;
-import com.qws.link.packet.base.GBPacket;
+import com.qws.link.packet.base.pakcet.GBPacket;
 
 public class CarWarnCommonPacket  extends BaseWarnPacket  implements GBPacket {
 	/**1：温度差异报警；0：正常*/

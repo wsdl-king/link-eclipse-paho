@@ -1,11 +1,11 @@
-package cn.qws.link.mqtt.client.build.gb;
+package com.qws.link.packet.mqtt.gb;
 
 
-import cn.qws.link.mqtt.client.build.message.LinkMessage;
-import com.qws.link.packet.base.BaseHeader;
-import com.qws.link.packet.base.BasePacket;
-import com.qws.link.packet.base.GBHeader;
-import com.qws.link.packet.base.GBPacket;
+import com.qws.link.packet.base.header.BaseHeader;
+import com.qws.link.packet.base.pakcet.BasePacket;
+import com.qws.link.packet.base.header.GBHeader;
+import com.qws.link.packet.base.pakcet.GBPacket;
+import com.qws.link.packet.mqtt.message.LinkMessage;
 import com.qws.link.packet.realtime.CarInfoPacket;
 
 import java.io.Serializable;
