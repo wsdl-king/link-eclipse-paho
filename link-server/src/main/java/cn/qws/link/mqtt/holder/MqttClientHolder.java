@@ -1,10 +1,10 @@
 package cn.qws.link.mqtt.holder;
 
 import cn.qws.link.mqtt.client.MqClient;
-import cn.qws.link.mqtt.client.build.MqMessageBuilder;
-import cn.qws.link.mqtt.client.build.gb.GBMessage;
-import com.qws.link.packet.base.GBHeader;
-import com.qws.link.packet.base.GBPacket;
+import com.qws.link.packet.base.header.GBHeader;
+import com.qws.link.packet.base.pakcet.GBPacket;
+import com.qws.link.packet.mqtt.build.MqMessageBuilder;
+import com.qws.link.packet.mqtt.gb.GBMessage;
 import com.qws.link.packet.realtime.CarInfoPacket;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;

@@ -1,7 +1,7 @@
 package cn.qws.link.mqtt.client;
 
-import cn.qws.link.mqtt.client.callback.LinkMqttCallBack;
-import cn.qws.link.mqtt.client.config.MqConfig;
+import cn.qws.link.mqtt.callback.LinkReceiveCallBack;
+import cn.qws.link.mqtt.config.MqConfig;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
@@ -26,14 +26,14 @@ public class MqClient {
 
     private MqttConnectOptions options;
 
-    private final LinkMqttCallBack linkMqttCallBack;
+    private final LinkReceiveCallBack linkMqttCallBack;
 
     private MqttClient mqttClient;
 
     private Logger logger = LoggerFactory.getLogger(MqClient.class);
 
     @Autowired
-    public MqClient(MqConfig mqConfig, LinkMqttCallBack linkMqttCallBack) {
+    public MqClient(MqConfig mqConfig, LinkReceiveCallBack linkMqttCallBack) {
         this.mqConfig = mqConfig;
         this.linkMqttCallBack = linkMqttCallBack;
     }
