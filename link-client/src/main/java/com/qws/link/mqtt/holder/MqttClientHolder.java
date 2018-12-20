@@ -65,8 +65,9 @@ public class MqttClientHolder {
             encryptType, int qos) {
         // 这里来组装 header 和packet 最后进行调用
         GBHeader gbHeader = new GBHeader(begin, command, answer, vin, encryptType, 1);
-        GBPacket packet = gbStrategy.getGBPacket(type);
-        return gbSend(topic, gbHeader, packet, qos);
+//        GBPacket packet = gbStrategy.getGBPacket(type);
+//        return gbSend(topic, gbHeader, packet, qos);
+        return null;
     }
 
 
