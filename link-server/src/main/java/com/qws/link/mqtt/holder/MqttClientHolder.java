@@ -1,9 +1,9 @@
 package com.qws.link.mqtt.holder;
 
-import com.qws.link.mqtt.client.MqClient;
 import com.qws.link.base.header.GBHeader;
 import com.qws.link.base.pakcet.GBPacket;
 import com.qws.link.mqtt.build.MqMessageBuilder;
+import com.qws.link.mqtt.client.MqClient;
 import com.qws.link.mqtt.gb.GBMessage;
 import com.qws.link.prototype.GBStrategy;
 import org.eclipse.paho.client.mqttv3.MqttException;
@@ -37,12 +37,12 @@ public class MqttClientHolder {
     /**
      * 订阅
      */
-    Boolean subsribe(String topic, String qos) {
+    public Boolean subsribe(String topic, Integer qos) {
         if (!mqClient.getMqttClient().isConnected()) {
             return false;
         }
         try {
-            mqClient.getMqttClient().subscribe(topic);
+            mqClient.getMqttClient().subscribe(topic,qos);
             return true;
         } catch (MqttException e) {
             logger.error("订阅mqtt服务端失败", e);
@@ -50,22 +50,21 @@ public class MqttClientHolder {
         }
     }
 
-
     /**
      * 默认的话 调用的是国标未加密的包,由rest调用
      */
-    public Boolean publish(String type, String topic, int command, int answer, String vin, int qos) {
-        return gbPublish(type, topic, "##", command, answer, vin, 1, qos);
+    public Boolean publish(String topic, GBPacket packet, int command, int answer, String vin, int qos) {
+        return gbPublish(topic, packet, "##", command, answer, vin, 1, qos);
     }
 
     /**
      * 发布,我打算自己组装message,作为最基类的发送消息,由rest调用
      */
-    public Boolean gbPublish(String type, String topic, String begin, int command, int answer, String vin, Integer
+    public Boolean gbPublish(String topic, GBPacket packet, String begin, int command, int answer, String vin, Integer
             encryptType, int qos) {
         // 这里来组装 header 和packet 最后进行调用
         GBHeader gbHeader = new GBHeader(begin, command, answer, vin, encryptType, 1);
-        GBPacket packet = gbStrategy.getGBPacket(type);
+        //不过由于我是发送者...苦逼的发送者
         return gbSend(topic, gbHeader, packet, qos);
     }
 

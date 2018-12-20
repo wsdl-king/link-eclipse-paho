@@ -2,7 +2,7 @@ spring:
   application:
     name: link
   profiles:
-    active: '@project.env@'
+    active:  dev
 
 ---
 # 开发环境配置 dev
@@ -15,8 +15,8 @@ spring:
      ansi:
        enabled: ALWAYS
 mqtt:
-  username: qws
-  password: a123456
+  username: admin
+  password: public
   host: tcp://127.0.0.1:1883
   clientId: 0
 
