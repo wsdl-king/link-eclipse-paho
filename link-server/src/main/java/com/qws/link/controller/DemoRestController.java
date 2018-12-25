@@ -26,16 +26,16 @@ public class DemoRestController {
         //
         String vin = "qws12345678901234";
         CarInfoPacket carInfoPacket = new CarInfoPacket();
-        carInfoPacket.setAccelTripValue(1);
-        carInfoPacket.setBrakeStatus(2);
-        carInfoPacket.setBrakeTripValue(3);
+        carInfoPacket.setAccPedal(1);
+        carInfoPacket.setBrakePedal(2);
+        carInfoPacket.setBrakingForce(3);
         carInfoPacket.setCarStatus(4);
         carInfoPacket.setChargeStatus(5);
         carInfoPacket.setDcStatus(1);
-        carInfoPacket.setDriveStatus(2);
-        carInfoPacket.setGears(1);
+        carInfoPacket.setDrivingForce(2);
+        carInfoPacket.setGear(1);
         carInfoPacket.setMileage(12.2);
-        carInfoPacket.setResistance(2);
+        carInfoPacket.setInsulateResist(12);
         carInfoPacket.setRunModel(1);
         carInfoPacket.setSoc(3);
         carInfoPacket.setSpeed(4.2);

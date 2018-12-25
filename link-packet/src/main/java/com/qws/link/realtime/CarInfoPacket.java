@@ -4,8 +4,10 @@ package com.qws.link.realtime;
 import com.qws.link.ByteUtils;
 import com.qws.link.base.ByteArrayBuf;
 import com.qws.link.base.pakcet.GBPacket;
-
 import java.io.Serializable;
+
+import static com.qws.link.ByteUtils.toDouble;
+import static com.qws.link.ByteUtils.toInt;
 
 /**
  * 车辆信息数据包--国标协议
@@ -278,4 +280,5 @@ public class CarInfoPacket implements GBPacket, Serializable {
     public void setBrakePedal(Integer brakePedal) {
         this.brakePedal = brakePedal;
     }
+
 }

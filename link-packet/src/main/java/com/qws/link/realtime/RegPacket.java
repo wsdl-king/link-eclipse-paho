@@ -3,9 +3,7 @@ package com.qws.link.realtime;
 import com.qws.link.ByteUtils;
 import com.qws.link.base.ByteArrayBuf;
 import com.qws.link.base.pakcet.GBPacket;
-
 import java.io.Serializable;
-
 /**
  * 车辆登入数据 ---国标
  */
@@ -40,14 +38,14 @@ public class RegPacket implements GBPacket, Serializable {
     public void build(ByteArrayBuf byteBuf) throws Exception {
         uploadTime = ByteUtils.dateBytes2Long(byteBuf.readBytes(6));
         loginSnArg = ByteUtils.byteArrayToInt(byteBuf.readBytes(2), 2);
-        iccid = getStringFromBytes(byteBuf.readBytes(20));
-        chargeEnergySubSysNum = toInt(byteBuf.readByte());
-        chargeEnergySysCodeLength = toInt(byteBuf.readByte());
+        iccid = ByteUtils.getStringFromBytes(byteBuf.readBytes(20));
+        chargeEnergySubSysNum = ByteUtils.toInt(byteBuf.readByte());
+        chargeEnergySysCodeLength = ByteUtils.toInt(byteBuf.readByte());
         chargeEnergySysCode = new String[0];
         if (chargeEnergySubSysNum != null && chargeEnergySubSysNum > 0) {
             chargeEnergySysCode = new String[chargeEnergySubSysNum];
             for (int i = 0; i < chargeEnergySubSysNum; i++) {
-                chargeEnergySysCode[i] = getStringFromBytes(byteBuf.readBytes(chargeEnergySysCodeLength));
+                chargeEnergySysCode[i] = ByteUtils.getStringFromBytes(byteBuf.readBytes(chargeEnergySysCodeLength));
             }
         }
     }

@@ -1,6 +1,8 @@
 package com.qws.link.base.header;
 
 
+import com.qws.link.ByteUtils;
+
 import java.util.Arrays;
 
 /**

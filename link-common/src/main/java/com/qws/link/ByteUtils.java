@@ -145,22 +145,8 @@ public class ByteUtils {
 		return vinBytes;
 	}
     
-    /**
-   	 * 字节转换成字符串
-   	 **/
-    public static String getStringFromBytes(byte[] bytes) {
-        int i = bytes.length-1;
-        while (bytes[i] == 0x00) {
-            i--;
-            if (i == -1) return new String();
-        }
-        return (new String(bytes, 0, i+1));
-    }
 
-    public static String getStringWithValid(byte[] bytes) {
-        return isCorrectData(bytes) ? getStringFromBytes(bytes) : null;
-    }
-    
+
     /**
    	 * 字节转换成字节数组
    	 **/
@@ -530,6 +516,14 @@ public class ByteUtils {
 		return zeroBytes;
 	}
 
+
+
+
+	public  static  String getStringFromBytes(byte[] bytes) {
+
+		return ByteUtils.isCorrectData(bytes) ? ByteUtils.getStringFromBytes(bytes) : null;
+	}
+
 	 public static void main(String[] args) {
 			/*Integer a = 50;
 	    	byte b = a.byteValue();
@@ -555,5 +549,7 @@ public class ByteUtils {
 
 		 System.out.println("--------");
      }
+
+
 	 
 }

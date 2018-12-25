@@ -37,7 +37,7 @@ public class LinkReceiveCallBack implements MqttCallbackExtended {
         long time = System.currentTimeMillis();
         // 统一的报文处理入口
         PacketServerHandler packetServerHandler = new PacketServerHandler(message.getPayload(), time, topic);
-        //丢给线程池去处理
+        //丢给线程池去处理,如果以后很多话可以换成线程池数组管理器
         LinkDispatchManager.getInstance().addRunnable(packetServerHandler);
         String s = ByteUtils.asHex(message.getPayload());
         logger.info("topic: {}", s);

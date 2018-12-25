@@ -1,10 +1,6 @@
 package com.qws.link.base;
 
 
-/**
- * @author zhangsi
- * @date created in 2018/6/27 16:05
- */
 public class ByteArrayBuf {
 
     private byte[] bytes;
