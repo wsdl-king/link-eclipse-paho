@@ -1,6 +1,5 @@
 package com.qws.link.base.pakcet;
 
-import com.qws.link.ByteUtils;
 import com.qws.link.base.ByteArrayBuf;
 
 /**

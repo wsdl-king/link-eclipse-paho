@@ -34,7 +34,6 @@ public class GBHeader implements BaseHeader {
      */
     private int dataLength;
 
-
     public GBHeader(String begin, int command, int answer, String vin,
                     int encryptType, int dataLength) {
         super();
@@ -137,7 +136,6 @@ public class GBHeader implements BaseHeader {
         result[result.length - 1] = lengthBytes[1];
         return result;
     }
-
     @Override
     public Integer length() {
         return null;

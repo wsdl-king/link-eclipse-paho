@@ -7,7 +7,7 @@ import com.qws.link.base.header.GBHeader;
 import com.qws.link.base.pakcet.BasePacket;
 import com.qws.link.base.pakcet.GBPacket;
 import com.qws.link.mqtt.message.LinkMessage;
-import com.qws.link.realtime.CarInfoPacket;
+import com.qws.link.realtime.children.CarInfoPacket;
 
 import java.io.Serializable;
 
@@ -17,6 +17,7 @@ import java.io.Serializable;
  * @since 18-12-14 14:10 by jdk 1.8
  */
 public class GBMessage extends LinkMessage implements Serializable {
+    private static final long serialVersionUID = 5677587474108917056L;
     /**
      * 国标数据头
      */
@@ -52,9 +53,9 @@ public class GBMessage extends LinkMessage implements Serializable {
      */
     @Override
     public byte[] unbuild(BaseHeader baseHeader, BasePacket basePacket) {
-        byte[] unbuild = baseHeader.unbuild();
-        byte[] unbuild1 = basePacket.unbuild();
-        return ByteUtils.addAll(unbuild, unbuild1);
+        byte[] headerBytes = baseHeader.unbuild();
+        byte[] packetBytes = basePacket.unbuild();
+        return ByteUtils.addAll(headerBytes, packetBytes);
     }
 
 

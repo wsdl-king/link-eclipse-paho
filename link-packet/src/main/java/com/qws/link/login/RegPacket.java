@@ -1,4 +1,4 @@
-package com.qws.link.realtime;
+package com.qws.link.login;
 
 import com.qws.link.ByteUtils;
 import com.qws.link.base.ByteArrayBuf;
@@ -8,6 +8,7 @@ import java.io.Serializable;
  * 车辆登入数据 ---国标
  */
 public class RegPacket implements GBPacket, Serializable {
+    private static final long serialVersionUID = 5476435170823715764L;
     /**
      * 数据采集时间
      */

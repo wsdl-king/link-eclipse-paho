@@ -1,4 +1,4 @@
-package com.qws.link.realtime;
+package com.qws.link.realtime.children;
 
 
 import com.qws.link.ByteUtils;
@@ -10,6 +10,7 @@ import static com.qws.link.ByteUtils.toDouble;
 import static com.qws.link.ByteUtils.toInt;
 
 /**
+ * 整车数据 0x01
  * 车辆信息数据包--国标协议
  */
 public class CarInfoPacket implements GBPacket, Serializable {
