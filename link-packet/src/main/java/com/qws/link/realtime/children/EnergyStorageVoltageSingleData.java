@@ -1,11 +1,12 @@
 package com.qws.link.realtime.children;
 
-/**
- * @author zhangsi
- * @date created in 2018/4/27 11:45
- */
-public class EnergyStorageVoltageSingleData {
+import java.io.Serializable;
 
+/**
+ */
+public class EnergyStorageVoltageSingleData  implements Serializable {
+
+    private static final long serialVersionUID = -3707487552130701682L;
     /** 可充电储能子系统号 Byte 有效值范围：1～250 */
     private Integer sysCode;
 
@@ -82,4 +83,5 @@ public class EnergyStorageVoltageSingleData {
     public void setSingleBatteryVoltage(Double[] singleBatteryVoltage) {
         this.singleBatteryVoltage = singleBatteryVoltage;
     }
+
 }

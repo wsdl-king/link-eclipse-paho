@@ -1,11 +1,13 @@
 package com.qws.link.realtime.children;
 
-/**
- * @author zhangsi
- * @date created in 2018/5/24 20:36
- */
-public class WarningFaultCode {
 
+import java.io.Serializable;
+
+/**
+ */
+public class WarningFaultCode implements Serializable {
+
+    private static final long serialVersionUID = -5440099714258588148L;
     private Integer partId;
 
     private Integer faultSeq;
@@ -33,4 +35,5 @@ public class WarningFaultCode {
     public void setFaultSeq(Integer faultSeq) {
         this.faultSeq = faultSeq;
     }
+
 }

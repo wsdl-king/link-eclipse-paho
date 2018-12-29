@@ -1,10 +1,13 @@
 package com.qws.link.realtime.children;
 
+import java.io.Serializable;
+
 /**
  * 每个驱动电机数据
  */
-public class DriveMotorSinglePacket {
+public class DriveMotorSingleData implements Serializable {
 
+    private static final long serialVersionUID = -6892150510867370181L;
     /** 驱动电机序号 BYTE 驱动电机顺序号，有效值范围1～253*/
     private Integer driveMotorSeq;
     /** 驱动电机状态 BYTE 0x01：耗电；0x02：发电；0x03：关闭状态；0x04：准备状态“0xFE”表示异常，“0xFF”表示无效。*/
@@ -22,9 +25,9 @@ public class DriveMotorSinglePacket {
     /** 电机控制器直流母线电流 WORD 有效值范围： 0～20000（数值偏移量1000A，表示-1000A～+1000A），最小计量单元：0.1A，“0xFF,0xFE”表示异常，“0xFF,0xFF”表示无效。*/
     private Double controllerCurrent;
 
-    public DriveMotorSinglePacket() {}
+    public DriveMotorSingleData() {}
 
-    public DriveMotorSinglePacket(Integer driveMotorSeq, Integer driveMotorStatus, Integer controllerTemp, Integer revs, Double torque, Integer driveMotorTemp, Double controllerVoltage, Double controllerCurrent) {
+    DriveMotorSingleData(Integer driveMotorSeq, Integer driveMotorStatus, Integer controllerTemp, Integer revs, Double torque, Integer driveMotorTemp, Double controllerVoltage, Double controllerCurrent) {
         this.driveMotorSeq = driveMotorSeq;
         this.driveMotorStatus = driveMotorStatus;
         this.controllerTemp = controllerTemp;
@@ -98,4 +101,5 @@ public class DriveMotorSinglePacket {
     public void setControllerCurrent(Double controllerCurrent) {
         this.controllerCurrent = controllerCurrent;
     }
+
 }

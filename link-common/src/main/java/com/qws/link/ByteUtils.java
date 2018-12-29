@@ -240,6 +240,10 @@ public class ByteUtils {
 
 		return (byteArray);
 	}
+
+	public static byte integerToByte(Integer integer) {
+		return integer == null ? 0 : integer.byteValue();
+	}
 	
 	/** 整型转换成字节数组 */
 	public static byte[] intToByteArray2(final int integer) {
