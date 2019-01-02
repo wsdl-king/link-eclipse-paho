@@ -1,13 +1,15 @@
 package com.qws.link.mqtt.callback;
 
 import com.qws.link.ByteUtils;
-import com.qws.link.handler.LinkDispatchManager;
+import com.qws.link.handler.holder.MessageHolder;
+import com.qws.link.handler.manager.LinkDispatchManager;
 import com.qws.link.handler.server.PacketServerHandler;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallbackExtended;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -19,6 +21,9 @@ import org.springframework.stereotype.Component;
 public class LinkReceiveCallBack implements MqttCallbackExtended {
 
     private static final Logger logger = LoggerFactory.getLogger(LinkReceiveCallBack.class);
+
+    @Autowired
+    MessageHolder messageHolder;
 
     @Override
     public void connectComplete(boolean reconnect, String serverURI) {
@@ -35,10 +40,10 @@ public class LinkReceiveCallBack implements MqttCallbackExtended {
     public void messageArrived(String topic, MqttMessage message) {
         //收到报文的时间.
         long time = System.currentTimeMillis();
-        // 统一的报文处理入口
-        PacketServerHandler packetServerHandler = new PacketServerHandler(message.getPayload(), time, topic);
-        //丢给线程池去处理,如果以后很多话可以换成线程池数组管理器
-        LinkDispatchManager.getInstance().addRunnable(packetServerHandler);
+        logger.info(" has received message ,time is :{}", time);
+        if (message.getPayload() == null || message.getPayload().length == 0) return;
+        //丢给一个消息 持有者对象处理,这个消息处理者对象会额外包装一层加入到线程池.
+        messageHolder.messageArrived(time, topic, message);
         String s = ByteUtils.asHex(message.getPayload());
         logger.info("topic: {}", s);
         logger.info("messageArrived");

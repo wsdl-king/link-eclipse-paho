@@ -1,9 +1,9 @@
 package com.qws.link.handler.server;
 
 import com.qws.link.base.ByteArrayBuf;
-import com.qws.link.handler.AbstractExecutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.kafka.core.KafkaTemplate;
 
 /**
  * @author qiwenshuai
@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
  * @since 18-12-19 11:08 by jdk 1.8
  */
 public class PacketServerHandler extends AbstractExecutor {
+
 
     private static final Logger logger = LoggerFactory.getLogger(PacketServerHandler.class);
 
@@ -20,15 +21,20 @@ public class PacketServerHandler extends AbstractExecutor {
 
     private String topic;
 
-    public PacketServerHandler(byte[] bytes, Long serverTime, String topic) {
+    private KafkaTemplate<String,String> kafkaTemplate;
+
+    public PacketServerHandler(byte[] bytes, Long serverTime, String topic,KafkaTemplate<String,String> kafkaTemplate) {
         this.byteBuf = ByteArrayBuf.warp(bytes);
         this.topic = topic;
         this.serverTime = serverTime;
+        this.kafkaTemplate=kafkaTemplate;
     }
 
     @Override
     public void action() {
 
+        System.out.println("发送kafka");
+         kafkaTemplate.send("otaUpgrade","otaUpgrade");
         //解码,保存报文内容.
         //解析指定位,然后看报文的类型
 //        byteBuf.readBytes()

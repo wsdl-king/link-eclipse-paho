@@ -1,4 +1,4 @@
-package com.qws.link.handler;
+package com.qws.link.handler.manager;
 
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
