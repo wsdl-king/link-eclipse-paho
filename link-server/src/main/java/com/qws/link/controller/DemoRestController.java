@@ -41,7 +41,7 @@ public class DemoRestController {
         carInfoPacket.setSpeed(4.2);
         carInfoPacket.setTotalCurrent(9.1);
         carInfoPacket.setTotalVoltage(10.1);
-        mqttClientHolder.publish("carinfo", carInfoPacket, 0xf1, 0xfe, vin, 1);
+        mqttClientHolder.publish("device/info", carInfoPacket, 0x02, 0xfe, vin, 1);
         return "o";
     }
 
@@ -50,7 +50,7 @@ public class DemoRestController {
      */
     @GetMapping(value = "/mqtt/sub")
     public String subscribeMessage() {
-        mqttClientHolder.subsribe("carinfo",1);
+        mqttClientHolder.subsribe("device/info",1);
         return "0";
     }
 }

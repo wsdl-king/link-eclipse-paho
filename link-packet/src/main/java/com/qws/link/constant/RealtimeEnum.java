@@ -1,10 +1,9 @@
 package com.qws.link.constant;
 
 import com.qws.link.ReflectUtil;
-import com.qws.link.base.ByteArrayBuf;
 import com.qws.link.base.pakcet.BasePacket;
+import com.qws.link.realtime.base.RealTimePacket;
 import com.qws.link.realtime.children.*;
-import com.qws.link.realtime.extend.RealTimeExtendPacket;
 
 import java.lang.reflect.Method;
 import java.util.EnumSet;
@@ -47,17 +46,20 @@ public enum RealtimeEnum {
 
     private static final Map<Integer, Method> DATA_SET_METHOD_MAP = new HashMap<>();
 
-    private RealtimeEnum(Integer id,  Class<? extends  BasePacket> dataClass) {
+    RealtimeEnum(Integer id, Class<? extends BasePacket> dataClass) {
         this.id = id;
         this.dataClass = dataClass;
     }
 
+    RealtimeEnum(){
+        
+    }
     static {
         for (RealtimeEnum type : EnumSet.allOf(RealtimeEnum.class)) {
             realtimeDataTypeMap.put(type.getId(), type);
             try {
-               Method get = BasePacket.class.getMethod(ReflectUtil.GET + type.getDataClass().getSimpleName());
-                Method set = RealTimeExtendPacket.class.getMethod(ReflectUtil.SET + type.getDataClass().getSimpleName(), type.getDataClass());
+               Method get = RealTimePacket.class.getMethod(ReflectUtil.GET + type.getDataClass().getSimpleName());
+                Method set = RealTimePacket.class.getMethod(ReflectUtil.SET + type.getDataClass().getSimpleName(), type.getDataClass());
                 DATA_GET_METHOD_MAP.put(type.getId(), get);
                 DATA_SET_METHOD_MAP.put(type.getId(), set);
             } catch (NoSuchMethodException e) {
@@ -81,15 +83,15 @@ public enum RealtimeEnum {
         return DATA_SET_METHOD_MAP.get(id);
     }
 
-    public static void main(String[] args) throws Exception {
-        new RealTimeExtendPacket().build(ByteArrayBuf.warp(new byte[0]));
-    }
-
     public Integer getId() {
         return id;
     }
 
     public Class<? extends  BasePacket>  getDataClass() {
         return dataClass;
+    }
+
+    public static void main(String[] args) {
+        RealtimeEnum carInfoPacket = RealtimeEnum.carInfoPacket;
     }
 }

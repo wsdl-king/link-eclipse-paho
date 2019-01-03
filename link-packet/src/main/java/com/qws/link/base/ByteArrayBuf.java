@@ -19,10 +19,11 @@ public class ByteArrayBuf {
     /**
      * 对于数据传递过来的字节,进行了包装,使其变成包装类,提供更多样化的方法.
      * */
-    public static ByteArrayBuf  warp(byte[] bytes) {
+    public static ByteArrayBuf  wrap(byte[] bytes) {
         if (bytes == null) return new ByteArrayBuf(new byte[0]);
         return new ByteArrayBuf(bytes);
     }
+
 
     public byte[] readBytes(int i) {
         if (i < 0) throw new IllegalArgumentException("i must be greater than 0. " + "i:" + i);

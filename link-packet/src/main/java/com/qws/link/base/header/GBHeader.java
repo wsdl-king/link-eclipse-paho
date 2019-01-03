@@ -2,6 +2,7 @@ package com.qws.link.base.header;
 
 
 import com.qws.link.ByteUtils;
+import com.qws.link.base.ByteArrayBuf;
 
 import java.util.Arrays;
 
@@ -9,6 +10,11 @@ import java.util.Arrays;
  * 国标基础数据头
  */
 public class GBHeader implements BaseHeader {
+
+    public static final int HEADER_LENGTH = 24;
+
+    public static final String HEADER_BEGIN = "##";
+
     /**
      * 一般已##开头
      */
@@ -45,9 +51,11 @@ public class GBHeader implements BaseHeader {
         this.dataLength = dataLength;
     }
 
-    public GBHeader(byte[] bytes){
-        build(bytes);
+    public GBHeader(ByteArrayBuf byteBuf){
+        build(byteBuf);
     }
+
+
 
 
     public String getBegin() {
@@ -106,13 +114,13 @@ public class GBHeader implements BaseHeader {
     }
 
     @Override
-    public void build(byte[] bytes) {
-        begin = new String(new byte[]{bytes[0], bytes[1]});
-        command = 0xff & bytes[2];
-        answer = 0xff & bytes[3];
-        vin = new String(Arrays.copyOfRange(bytes, 4, 21));
-        encryptType = 0xff & bytes[21];
-        dataLength = ByteUtils.byteArrayToInt(new byte[]{0x00, 0x00, bytes[22], bytes[23]}, 0);
+    public void build(ByteArrayBuf byteBuf) {
+        begin = new String(byteBuf.readBytes(2));
+        command = ByteUtils.toInt(byteBuf.readByte());
+        answer = byteBuf.readByte();
+        vin = new String(byteBuf.readBytes(17)).trim();
+        encryptType = ByteUtils.isCorrectData(byteBuf.readByte()) ? byteBuf.getByte(21) : -1;
+        dataLength = ByteUtils.byteArrayToInt(new byte[]{0x00,0x00, byteBuf.readByte(), byteBuf.readByte()},0);
     }
 
     @Override

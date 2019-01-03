@@ -2,6 +2,8 @@ package com.qws.link.handler.holder;
 
 import com.qws.link.handler.manager.LinkDispatchManager;
 import com.qws.link.handler.server.PacketServerHandler;
+import com.qws.link.mqtt.holder.MqttClientHolder;
+import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -19,7 +21,10 @@ public class MessageHolder {
 
     private final KafkaTemplate kafkaTemplate;
 
+    @Autowired
+    MqttClientHolder mqttClientHolder;
 
+    @Autowired
     public MessageHolder(KafkaTemplate kafkaTemplate) {
         this.kafkaTemplate = kafkaTemplate;
     }
@@ -28,5 +33,11 @@ public class MessageHolder {
         PacketServerHandler packetServerHandler = new PacketServerHandler(message.getPayload(), time, topic, kafkaTemplate);
         LinkDispatchManager.getInstance().addRunnable(packetServerHandler);
     }
+
+
+    public void doSubscribe() {
+        mqttClientHolder.subsribe(tboxTopic, 1);
+    }
+
 
 }

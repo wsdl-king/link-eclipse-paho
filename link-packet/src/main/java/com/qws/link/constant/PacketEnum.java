@@ -1,8 +1,14 @@
 package com.qws.link.constant;
 
+import com.qws.link.base.pakcet.BasePacket;
+import com.qws.link.base.pakcet.GBPacket;
 import com.qws.link.login.RegPacket;
 import com.qws.link.logout.LogoutPacket;
 import com.qws.link.realtime.base.RealTimePacket;
+
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author qiwenshuai
@@ -49,5 +55,30 @@ public enum PacketEnum {
 
     public Class<?> getClassType() {
         return classType;
+    }
+
+    public static final Map<Integer, PacketEnum> responsePacketTypeMap = new HashMap<>();
+
+    static {
+
+        for (PacketEnum type : EnumSet.allOf(PacketEnum.class)) {
+            responsePacketTypeMap.put(type.getCommand(), type);
+        }
+    }
+
+
+    public static Map<Integer, PacketEnum> getResponsePacketTypeMap() {
+        return responsePacketTypeMap;
+    }
+
+
+    public static PacketEnum getResponsePacketTypeByCommand(int command) {
+
+        return responsePacketTypeMap.containsKey(command) ? responsePacketTypeMap.get(command) : null;
+    }
+
+    public GBPacket getResponsePacketInstance() throws IllegalAccessException, InstantiationException {
+
+        return (GBPacket) this.classType.newInstance();
     }
 }

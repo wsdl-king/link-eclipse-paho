@@ -2,6 +2,7 @@ package com.qws.link.mqtt.gb;
 
 
 import com.qws.link.ByteUtils;
+import com.qws.link.base.ByteArrayBuf;
 import com.qws.link.base.header.BaseHeader;
 import com.qws.link.base.header.GBHeader;
 import com.qws.link.base.pakcet.BasePacket;
@@ -35,6 +36,8 @@ public class GBMessage extends LinkMessage implements Serializable {
 
     public GBMessage(GBHeader gbHeader, GBPacket gbPacket) {
         super(gbHeader, gbPacket);
+        this.gbPacket = gbPacket;
+        this.gbHeader = gbHeader;
     }
 
     /**
@@ -63,9 +66,26 @@ public class GBMessage extends LinkMessage implements Serializable {
      * 解封成我的国标信息类体
      */
     @Override
-    public LinkMessage build(byte[] bytes) {
-        this.gbHeader = new GBHeader(bytes);
+    public LinkMessage build(ByteArrayBuf buf) throws Exception {
+        this.gbHeader = new GBHeader(buf);
         this.gbPacket = new CarInfoPacket();
+        gbPacket.build(buf);
         return new GBMessage(gbHeader, gbPacket);
+    }
+
+    public GBHeader getGbHeader() {
+        return gbHeader;
+    }
+
+    public void setGbHeader(GBHeader gbHeader) {
+        this.gbHeader = gbHeader;
+    }
+
+    public GBPacket getGbPacket() {
+        return gbPacket;
+    }
+
+    public void setGbPacket(GBPacket gbPacket) {
+        this.gbPacket = gbPacket;
     }
 }

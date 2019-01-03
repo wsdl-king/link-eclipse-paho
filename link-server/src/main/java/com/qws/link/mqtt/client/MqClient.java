@@ -26,16 +26,16 @@ public class MqClient {
 
     private MqttConnectOptions options;
 
-    private final LinkReceiveCallBack linkMqttCallBack;
+    @Autowired
+    LinkReceiveCallBack linkMqttCallBack;
 
     private MqttClient mqttClient;
 
     private Logger logger = LoggerFactory.getLogger(MqClient.class);
 
     @Autowired
-    public MqClient(MqConfig mqConfig, LinkReceiveCallBack linkMqttCallBack) {
+    public MqClient(MqConfig mqConfig) {
         this.mqConfig = mqConfig;
-        this.linkMqttCallBack = linkMqttCallBack;
     }
 
     @PostConstruct

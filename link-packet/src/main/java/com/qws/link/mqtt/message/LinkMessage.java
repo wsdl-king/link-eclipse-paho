@@ -1,5 +1,6 @@
 package com.qws.link.mqtt.message;
 
+import com.qws.link.base.ByteArrayBuf;
 import com.qws.link.base.header.BaseHeader;
 import com.qws.link.base.pakcet.BasePacket;
 
@@ -27,6 +28,21 @@ public abstract class LinkMessage {
 
     public abstract byte[] unbuild(BaseHeader baseHeader, BasePacket basePacket);
 
-    public abstract LinkMessage build(byte[] bytes);
+    public abstract LinkMessage build(ByteArrayBuf buf) throws Exception;
 
+    public BaseHeader getBaseHeader() {
+        return baseHeader;
+    }
+
+    public void setBaseHeader(BaseHeader baseHeader) {
+        this.baseHeader = baseHeader;
+    }
+
+    public BasePacket getBasePacket() {
+        return basePacket;
+    }
+
+    public void setBasePacket(BasePacket basePacket) {
+        this.basePacket = basePacket;
+    }
 }

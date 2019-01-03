@@ -22,18 +22,20 @@ public class LinkReceiveCallBack implements MqttCallbackExtended {
 
     private static final Logger logger = LoggerFactory.getLogger(LinkReceiveCallBack.class);
 
+
     @Autowired
     MessageHolder messageHolder;
 
     @Override
     public void connectComplete(boolean reconnect, String serverURI) {
-        logger.info(" 连接完成 : connectComplete");
+        logger.info(" 连接完成 : connectComplete,开始订阅mqtt");
+        messageHolder.doSubscribe();
+        logger.info("订阅mqtt服务端topic完成 : connectComplete,开始订阅mqtt");
     }
 
     @Override
     public void connectionLost(Throwable cause) {
         logger.info("connectionLost");
-
     }
 
     @Override
@@ -52,7 +54,8 @@ public class LinkReceiveCallBack implements MqttCallbackExtended {
 
     @Override
     public void deliveryComplete(IMqttDeliveryToken token) {
-        logger.info("交货完成");
+        logger.info("message is deliveryComplete");
+        //取消订阅topic
 
     }
 }
