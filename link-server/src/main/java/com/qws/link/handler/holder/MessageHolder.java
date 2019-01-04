@@ -30,7 +30,7 @@ public class MessageHolder {
     }
 
     public void messageArrived(long time, String topic, MqttMessage message) {
-        PacketServerHandler packetServerHandler = new PacketServerHandler(message.getPayload(), time, topic, kafkaTemplate);
+        PacketServerHandler packetServerHandler = new PacketServerHandler(message.getPayload(), time, topic, kafkaTemplate,"GB");
         LinkDispatchManager.getInstance().addRunnable(packetServerHandler);
     }
 

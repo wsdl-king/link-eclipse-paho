@@ -1,6 +1,7 @@
 package com.qws.link.codec;
 
 /**
+ * 生成/or检验 bbc校验码
  */
 public class CheckCode {
 

@@ -80,7 +80,8 @@ public class MqttClientHolder {
         }
         try {
             //构建最终的请求体
-            MqttMessage mqttMessage = MqMessageBuilder.getInstance().buildMessage(new GBMessage(gbHeader, gbPacket));
+            String type ="GB";
+            MqttMessage mqttMessage = MqMessageBuilder.getInstance().buildMessage(new GBMessage(gbHeader, gbPacket,type));
             mqttMessage.setQos(qos);
             mqClient.getMqttClient().publish(topic, mqttMessage);
             //发送给mqtt服务器

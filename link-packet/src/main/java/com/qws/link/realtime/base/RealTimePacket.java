@@ -86,7 +86,7 @@ public class RealTimePacket  implements GBPacket, Serializable {
         BasePacket packet = realtimeEnum.getDataClass().newInstance();
         packet.build(byteBuf);
         //反射给不同的包赋值
-        realtimeEnum.dataSetMethod(realtimeEnum.getId()).invoke(this, packet);
+        RealtimeEnum.dataSetMethod(realtimeEnum.getId()).invoke(this, packet);
     }
 
     @Override

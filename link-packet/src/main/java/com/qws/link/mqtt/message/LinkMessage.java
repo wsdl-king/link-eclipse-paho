@@ -3,6 +3,7 @@ package com.qws.link.mqtt.message;
 import com.qws.link.base.ByteArrayBuf;
 import com.qws.link.base.header.BaseHeader;
 import com.qws.link.base.pakcet.BasePacket;
+import com.qws.link.mqtt.gb.GBMessage;
 
 /**
  * @author qiwenshuai
@@ -11,24 +12,24 @@ import com.qws.link.base.pakcet.BasePacket;
  */
 public abstract class LinkMessage {
 
-    private BaseHeader baseHeader;
-    private BasePacket basePacket;
+    protected BaseHeader baseHeader;
+    protected BasePacket basePacket;
+    protected String type;
 
-
-    public LinkMessage(BaseHeader baseHeader, BasePacket basePacket) {
+    public LinkMessage(BaseHeader baseHeader, BasePacket basePacket, String type) {
         this.baseHeader = baseHeader;
         this.basePacket = basePacket;
+        this.type = type;
+
+    }
+
+    public LinkMessage() {
 
     }
 
     public byte[] finalUnBuild() {
         return unbuild(this.baseHeader, this.basePacket);
     }
-
-
-    public abstract byte[] unbuild(BaseHeader baseHeader, BasePacket basePacket);
-
-    public abstract LinkMessage build(ByteArrayBuf buf) throws Exception;
 
     public BaseHeader getBaseHeader() {
         return baseHeader;
@@ -45,4 +46,22 @@ public abstract class LinkMessage {
     public void setBasePacket(BasePacket basePacket) {
         this.basePacket = basePacket;
     }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public abstract byte[] unbuild(BaseHeader baseHeader, BasePacket basePacket);
+
+    public abstract LinkMessage build(ByteArrayBuf buf) throws Exception;
+
+//    public Object  getMessageByType(){
+//        if("GB".equals(type)){
+//            return  (GBMessage)this;
+//        }
+//    }
 }

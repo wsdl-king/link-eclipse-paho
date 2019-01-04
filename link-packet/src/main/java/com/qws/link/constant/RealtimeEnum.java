@@ -42,7 +42,6 @@ public enum RealtimeEnum {
 
     private static final Map<Integer, RealtimeEnum> realtimeDataTypeMap = new HashMap<>();
 
-    private static final Map<Integer, Method> DATA_GET_METHOD_MAP = new HashMap<>();
 
     private static final Map<Integer, Method> DATA_SET_METHOD_MAP = new HashMap<>();
 
@@ -58,9 +57,7 @@ public enum RealtimeEnum {
         for (RealtimeEnum type : EnumSet.allOf(RealtimeEnum.class)) {
             realtimeDataTypeMap.put(type.getId(), type);
             try {
-               Method get = RealTimePacket.class.getMethod(ReflectUtil.GET + type.getDataClass().getSimpleName());
                 Method set = RealTimePacket.class.getMethod(ReflectUtil.SET + type.getDataClass().getSimpleName(), type.getDataClass());
-                DATA_GET_METHOD_MAP.put(type.getId(), get);
                 DATA_SET_METHOD_MAP.put(type.getId(), set);
             } catch (NoSuchMethodException e) {
                 e.printStackTrace();
@@ -71,11 +68,6 @@ public enum RealtimeEnum {
     public static RealtimeEnum getRealtimeDataType(Integer id) {
 
         return realtimeDataTypeMap.containsKey(id) ? realtimeDataTypeMap.get(id) : null;
-    }
-
-    public static Method dataGetMethod(Integer id) {
-
-        return DATA_GET_METHOD_MAP.get(id);
     }
 
     public static Method dataSetMethod(Integer id) {

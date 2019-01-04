@@ -1,11 +1,14 @@
 package com.qws.link.handler.server;
 
 import com.qws.link.base.ByteArrayBuf;
+import com.qws.link.base.header.BaseHeader;
 import com.qws.link.base.header.GBHeader;
+import com.qws.link.base.pakcet.BasePacket;
 import com.qws.link.base.pakcet.GBPacket;
 import com.qws.link.codec.GBCodecHolder;
 import com.qws.link.constant.PacketEnum;
 import com.qws.link.mqtt.gb.GBMessage;
+import com.qws.link.mqtt.message.LinkMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -28,23 +31,30 @@ public class PacketServerHandler extends AbstractExecutor {
 
     private KafkaTemplate<String, String> kafkaTemplate;
 
-    public PacketServerHandler(byte[] bytes, Long serverTime, String topic, KafkaTemplate<String, String> kafkaTemplate) {
+    /**
+     * 协议类型---GB代表国标
+     */
+    private String type;
+
+    public PacketServerHandler(byte[] bytes, Long serverTime, String topic, KafkaTemplate<String, String> kafkaTemplate, String type) {
         this.byteBuf = ByteArrayBuf.wrap(bytes);
         this.topic = topic;
         this.serverTime = serverTime;
         this.kafkaTemplate = kafkaTemplate;
+        this.type = type;
     }
 
     @Override
     public void action() {
         try {
-            //假设收到的就是完整的报文,直接解码
-            GBMessage gbMessage = GBCodecHolder.decoder().decoder(byteBuf.array());
-            GBHeader gbHeader = gbMessage.getGbHeader();
-            GBPacket gbPacket = gbMessage.getGbPacket();
-            // 根据header携带的command命令类型进行不同服务的调用
-            PacketEnum packetType = PacketEnum.getResponsePacketTypeByCommand(gbMessage.getGbHeader().getCommand());
-            System.out.println(packetType.name());
+            if ("GB".equals(type)) {
+                GBMessage gbMessage = (GBMessage) new GBMessage().build(byteBuf);
+                GBHeader gbHeader = (GBHeader) gbMessage.getBaseHeader();
+                GBPacket gbPacket = (GBPacket) gbMessage.getBasePacket();
+                // 根据header携带的command命令类型进行不同服务的调用
+                PacketEnum packetType = PacketEnum.getResponsePacketTypeByCommand(gbHeader.getCommand());
+                System.out.println(packetType.name());
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

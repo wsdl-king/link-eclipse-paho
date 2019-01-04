@@ -12,8 +12,8 @@ import com.qws.link.mqtt.gb.GBMessage;
 public class GBPacketEncoder {
 
     public byte[] encoder(GBMessage message) {
-        GBHeader header = message.getGbHeader();
-        GBPacket body = message.getGbPacket();
+        GBHeader header = (GBHeader) message.getBaseHeader();
+        GBPacket body = (GBPacket) message.getBasePacket();
 
         byte[] bodyBytes = body.unbuild();
         header.setDataLength(bodyBytes.length);

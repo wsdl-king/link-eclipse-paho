@@ -7,6 +7,7 @@ import com.qws.link.base.header.GBHeader;
 import com.qws.link.base.pakcet.GBPacket;
 import com.qws.link.constant.PacketEnum;
 import com.qws.link.mqtt.gb.GBMessage;
+import com.qws.link.mqtt.message.LinkMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,6 +20,8 @@ import java.util.Arrays;
 public class GBPacketDecoder {
 
     private static final Logger logger = LoggerFactory.getLogger(GBPacketDecoder.class);
+
+    private static final String type = "GB";
 
     public GBMessage decoder(byte[] bytes) throws Exception {
 
@@ -64,13 +67,13 @@ public class GBPacketDecoder {
         GBPacket packet = packetType.getResponsePacketInstance();
         packet.build(ByteArrayBuf.wrap(bodyBytes));
 
-        return new GBMessage(header, packet);
+        return new GBMessage(header, packet,type);
     }
 
     public static void main(String[] args) {
-        byte[] b= new byte[1024];
-        b[0]=35;
-        b[1]=35;
+        byte[] b = new byte[1024];
+        b[0] = 35;
+        b[1] = 35;
         String stringFromBytes = ByteUtils.getStringFromBytes(new byte[]{b[0], b[1]});
         System.out.println(stringFromBytes);
 
