@@ -12,7 +12,7 @@ import org.springframework.kafka.annotation.EnableKafka;
  * @since 18-12-10 14:42 by jdk 1.8
  */
 //没用用到mongodb 先不去自动加载了
-@SpringBootApplication(exclude = {MongoAutoConfiguration.class,MongoDataAutoConfiguration.class})
+@SpringBootApplication()
 @EnableKafka
 public class LinkServerApplication {
 

@@ -16,6 +16,7 @@
         <module>link-packet</module>
         <module>link-server</module>
         <module>link-client</module>
+        <module>link-server-mix</module>
     </modules>
 
     <parent>
@@ -81,7 +82,7 @@
             <artifactId>spring-cloud-starter</artifactId>
         </dependency>
 
-         <!--mqtt-->
+         <!--mqtt完整客户端实现-->
         <dependency>
             <groupId>org.eclipse.paho</groupId>
             <artifactId>org.eclipse.paho.client.mqttv3</artifactId>
