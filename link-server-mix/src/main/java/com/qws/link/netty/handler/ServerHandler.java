@@ -1,7 +1,9 @@
 package com.qws.link.netty.handler;
 
+import com.qws.link.SpringBeanUtils;
 import com.qws.link.entity.ChannelAttr;
 import com.qws.link.entity.ChannelMap;
+import com.qws.link.handler.holder.MessageHolder;
 import com.qws.link.mqtt.message.LinkMessage;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -19,7 +21,6 @@ import org.slf4j.LoggerFactory;
 @ChannelHandler.Sharable
 public class ServerHandler extends SimpleChannelInboundHandler<LinkMessage> {
 
-
     /**
      * 此处使用Channel级别的AbstractMap存储额外属性,
      * tip1:ChannelHandlerContext 级别的 AbstractMap 单体享用,互不影响
@@ -34,14 +35,15 @@ public class ServerHandler extends SimpleChannelInboundHandler<LinkMessage> {
         AttributeKey<Object> objectAttributeKey = AttributeKey.valueOf(CHANNEL);
         ChannelAttr channelAttr = new ChannelAttr();
         ctx.channel().attr(objectAttributeKey).set(channelAttr);
-        ChannelMap.addChannelMap("test",ctx.channel());
-        logger.info("channel已经建立完成");
+        channelAttr.setDeviceId("123456");
+        ChannelMap.addChannelMap("test", ctx.channel());
+        logger.info("Channel  already completed ");
     }
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) {
         //通道关闭的操作
-        logger.info("关闭成功,地址为: {}", ctx.channel().localAddress());
+        logger.info("close success,address is: {}", ctx.channel().localAddress());
     }
 
     /**
@@ -56,17 +58,18 @@ public class ServerHandler extends SimpleChannelInboundHandler<LinkMessage> {
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
         if (evt instanceof IdleStateEvent) {
             //这边需要处理超时的操作
-            System.out.println("我超时了");
             AttributeKey<Object> objectAttributeKey = AttributeKey.valueOf(String.valueOf(CHANNEL));
-            Object o = ctx.channel().attr(objectAttributeKey).get();
-            System.out.println(o);
+            ChannelAttr channelAttr = (ChannelAttr) ctx.channel().attr(objectAttributeKey).get();
+            String deviceId = channelAttr.getDeviceId();
+            logger.info("Sorry, I have timed out,My deviceId is {}", deviceId);
         }
         super.userEventTriggered(ctx, evt);
     }
 
 
     @Override
-    protected void channelRead0(ChannelHandlerContext ctx, LinkMessage msg) throws Exception {
-        System.out.println(msg);
+    protected void channelRead0(ChannelHandlerContext ctx, LinkMessage msg) {
+        MessageHolder messageHolder = SpringBeanUtils.getBean(MessageHolder.class);
+        messageHolder.messageArrived(1000L, msg);
     }
 }

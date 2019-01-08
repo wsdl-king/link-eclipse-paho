@@ -31,7 +31,9 @@ public class ChannelMap {
         this.id = id;
     }
 
-
+    /**
+     * @apiNote key必须保证全局唯一, 在链接建立的时候, 需要保存对应key的channel
+     */
     public static void addChannelMap(String key, Channel channel) {
         if (!CHANNEL_CONCURRENT_HASH_MAP.containsKey(key)) {
             synchronized (ChannelMap.class) {
@@ -47,8 +49,18 @@ public class ChannelMap {
         return CHANNEL_CONCURRENT_HASH_MAP.get(key);
     }
 
-    public static synchronized void removeChannel(String key) {
-        CHANNEL_CONCURRENT_HASH_MAP.remove(key);
 
+    /**
+     * @apiNote key必须保证全局唯一, 在链接关闭的时候, 需要去除对应key的channel
+     */
+    public static void removeChannel(String key) {
+        if (CHANNEL_CONCURRENT_HASH_MAP.containsKey(key)) {
+            synchronized (ChannelMap.class) {
+                if (CHANNEL_CONCURRENT_HASH_MAP.containsKey(key)) {
+                    // 如果对应的key已经在map中存在,那么就不允许添加.
+                    CHANNEL_CONCURRENT_HASH_MAP.remove(key);
+                }
+            }
+        }
     }
 }
