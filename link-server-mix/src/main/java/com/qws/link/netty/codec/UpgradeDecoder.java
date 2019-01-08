@@ -1,4 +1,4 @@
-package com.qws.link.protocol;
+package com.qws.link.netty.codec;
 
 import com.qws.link.base.ByteArrayBuf;
 import com.qws.link.mqtt.gb.GBMessage;

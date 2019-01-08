@@ -18,9 +18,6 @@ public class ChannelMap {
 
     private String id;
 
-    public Channel getChannel() {
-        return channel;
-    }
 
     public void setChannel(Channel channel) {
         this.channel = channel;
@@ -35,13 +32,14 @@ public class ChannelMap {
     }
 
 
-    public static synchronized void addChannelMap(String key, Channel channel) {
-        synchronized (ChannelMap.class) {
-            // 如果对应的key已经在map中存在,那么就不允许添加.
-            if (CHANNEL_CONCURRENT_HASH_MAP.containsKey(key)) {
-                return;
+    public static void addChannelMap(String key, Channel channel) {
+        if (!CHANNEL_CONCURRENT_HASH_MAP.containsKey(key)) {
+            synchronized (ChannelMap.class) {
+                if (!CHANNEL_CONCURRENT_HASH_MAP.containsKey(key)) {
+                    // 如果对应的key已经在map中存在,那么就不允许添加.
+                    CHANNEL_CONCURRENT_HASH_MAP.put(key, channel);
+                }
             }
-            CHANNEL_CONCURRENT_HASH_MAP.put(key, channel);
         }
     }
 

@@ -1,6 +1,7 @@
-package com.qws.link.channelhander;
+package com.qws.link.netty.handler;
 
 import com.qws.link.entity.ChannelAttr;
+import com.qws.link.entity.ChannelMap;
 import com.qws.link.mqtt.message.LinkMessage;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -16,30 +17,31 @@ import org.slf4j.LoggerFactory;
  * @since 19-1-5 15:35 by jdk 1.8
  */
 @ChannelHandler.Sharable
-public class UpgradeChannelHandler extends SimpleChannelInboundHandler<LinkMessage> {
+public class ServerHandler extends SimpleChannelInboundHandler<LinkMessage> {
 
 
     /**
      * 此处使用Channel级别的AbstractMap存储额外属性,
      * tip1:ChannelHandlerContext 级别的 AbstractMap 单体享用,互不影响
      * tip2:ChannelHandlerContext.Channel()级别的 AbstractMap 全局享用,互相影响.
-     * */
-    private  static  final String CHANNEL="netty.channel";
-    private Logger logger = LoggerFactory.getLogger(UpgradeChannelHandler.class);
+     */
+    private static final String CHANNEL = "netty.channel";
+    private Logger logger = LoggerFactory.getLogger(ServerHandler.class);
 
 
     @Override
-    public void channelActive(ChannelHandlerContext ctx) throws Exception {
+    public void channelActive(ChannelHandlerContext ctx) {
         AttributeKey<Object> objectAttributeKey = AttributeKey.valueOf(CHANNEL);
         ChannelAttr channelAttr = new ChannelAttr();
         ctx.channel().attr(objectAttributeKey).set(channelAttr);
+        ChannelMap.addChannelMap("test",ctx.channel());
         logger.info("channel已经建立完成");
     }
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) {
         //通道关闭的操作
-        logger.info("【DefaultMqttHandler：channelInactive】" + ctx.channel().localAddress().toString() + "关闭成功");
+        logger.info("关闭成功,地址为: {}", ctx.channel().localAddress());
     }
 
     /**
@@ -49,19 +51,18 @@ public class UpgradeChannelHandler extends SimpleChannelInboundHandler<LinkMessa
      * decoder(接受,是一个InboundHandler)->ChannelInboundHandler(自定义读消息handler)->encoder(发出,其实是一个outboundHandler)
      * 参考 1: https://blog.csdn.net/wm3418925/article/details/54864177
      * 参考 2: https://www.jianshu.com/p/a8a0acfdc96c
-     * */
+     */
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
         if (evt instanceof IdleStateEvent) {
             //这边需要处理超时的操作
             System.out.println("我超时了");
-            AttributeKey<Object> objectAttributeKey = AttributeKey.valueOf(String.valueOf("qws"));
+            AttributeKey<Object> objectAttributeKey = AttributeKey.valueOf(String.valueOf(CHANNEL));
             Object o = ctx.channel().attr(objectAttributeKey).get();
             System.out.println(o);
         }
         super.userEventTriggered(ctx, evt);
     }
-
 
 
     @Override

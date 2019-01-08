@@ -1,6 +1,6 @@
 package com.qws.link.auto;
 
-import com.qws.link.server.NettyServer;
+import com.qws.link.netty.server.NettyServer;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**

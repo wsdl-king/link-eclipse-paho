@@ -1,8 +1,9 @@
-package com.qws.link.server;
+package com.qws.link.netty.server;
 
-import com.qws.link.channelhander.UpgradeChannelHandler;
 import com.qws.link.common.IpUtils;
-import com.qws.link.protocol.UpgradeDecoder;
+import com.qws.link.netty.codec.UpgradeEncoder;
+import com.qws.link.netty.handler.ServerHandler;
+import com.qws.link.netty.codec.UpgradeDecoder;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.channel.*;
@@ -83,7 +84,7 @@ public class NettyServer {
                 .childOption(ChannelOption.TCP_NODELAY, true)
                 .childOption(ChannelOption.SO_KEEPALIVE, true)
                 .childOption(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT);
-        bootstrap.bind("127.0.0.1", port).addListener((ChannelFutureListener) channelFuture -> {
+        bootstrap.bind("192.168.88.152", port).addListener((ChannelFutureListener) channelFuture -> {
             if (channelFuture.isSuccess())
                 logger.info("服务端启动成功【" + IpUtils.getHost() + ":" + port + "】");
             else
@@ -94,23 +95,18 @@ public class NettyServer {
 
 
     /**
-     * @param channelPipeline channelPipeline
+     * 初始化channelHandler处理器
      */
     private void initHandler(ChannelPipeline channelPipeline) {
 
-        initProtocolHandler(channelPipeline);
         //心跳处理机制
         channelPipeline.addLast(new IdleStateHandler(30, 0, 0));
-        // 我实际的业务处理机制
-        channelPipeline.addLast(new UpgradeChannelHandler());
-
-    }
-
-
-    private void initProtocolHandler(ChannelPipeline channelPipeline) {
-
         //固定长度解码
         channelPipeline.addLast(new UpgradeDecoder(MAX_FRAME_LENGTH, LENGTH_FIELD_OFFSET, LENGTH_FIELD_LENGTH, LENGTH_ADJUSTMENT, INITIAL_BYTES_TO_STRIP, false));
+        // 我实际的业务处理机制
+        channelPipeline.addLast(new ServerHandler());
+        //编码器
+        channelPipeline.addLast(new UpgradeEncoder());
 
     }
 

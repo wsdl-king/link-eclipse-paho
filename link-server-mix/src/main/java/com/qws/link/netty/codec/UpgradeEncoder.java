@@ -1,6 +1,5 @@
-package com.qws.link.protocol;
+package com.qws.link.netty.codec;
 
-import com.qws.link.mqtt.gb.GBMessage;
 import com.qws.link.mqtt.message.LinkMessage;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -25,6 +24,7 @@ public class UpgradeEncoder extends MessageToByteEncoder<LinkMessage> {
             throw new Exception("编码失败,没有数据信息!");
         }
         byte[] bytes = msg.finalUnBuild();
-        out.writeBytes(Unpooled.copiedBuffer(bytes));
+        ByteBuf byteBuf = Unpooled.copiedBuffer(bytes);
+        ctx.channel().writeAndFlush(byteBuf);
     }
 }

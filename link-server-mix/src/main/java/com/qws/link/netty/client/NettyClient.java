@@ -1,7 +1,6 @@
-package com.qws.link.client;
+package com.qws.link.netty.client;
 
-import com.qws.link.ByteUtils;
-import com.qws.link.codec.CheckCode;
+import com.qws.link.netty.handler.ClientHandler;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;

@@ -1,4 +1,4 @@
-package com.qws.link.client;
+package com.qws.link.netty.handler;
 
 import com.qws.link.ByteUtils;
 import com.qws.link.codec.CheckCode;
