@@ -74,6 +74,7 @@ public class NettyServer {
                 .channel(NioServerSocketChannel.class)
                 .option(ChannelOption.SO_REUSEADDR, true)
                 .option(ChannelOption.SO_BACKLOG, 1024)//设置TCP缓冲区
+                //服务端发送使用直接内存
                 .option(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT)
                 .option(ChannelOption.SO_RCVBUF, 1024 * 1024) // 设置接受数据的缓存大小
                 .childHandler(new ChannelInitializer<SocketChannel>() {
@@ -83,6 +84,7 @@ public class NettyServer {
                 })
                 .childOption(ChannelOption.TCP_NODELAY, true)
                 .childOption(ChannelOption.SO_KEEPALIVE, true)
+                //接受客户端使用直接内存
                 .childOption(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT);
         bootstrap.bind("192.168.88.152", port).addListener((ChannelFutureListener) channelFuture -> {
             if (channelFuture.isSuccess())

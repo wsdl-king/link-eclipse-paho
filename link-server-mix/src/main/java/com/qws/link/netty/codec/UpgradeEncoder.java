@@ -2,7 +2,6 @@ package com.qws.link.netty.codec;
 
 import com.qws.link.mqtt.message.LinkMessage;
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToByteEncoder;
 import org.slf4j.Logger;
@@ -24,7 +23,9 @@ public class UpgradeEncoder extends MessageToByteEncoder<LinkMessage> {
             throw new Exception("编码失败,没有数据信息!");
         }
         byte[] bytes = msg.finalUnBuild();
-        ByteBuf byteBuf = Unpooled.copiedBuffer(bytes);
-        ctx.channel().writeAndFlush(byteBuf);
+        //尝试使用堆外内存进行读写
+        ByteBuf byteBuf1 = ctx.channel().alloc().directBuffer(bytes.length).writeBytes(bytes);
+//        ByteBuf byteBuf = Unpooled.copiedBuffer(bytes);
+        ctx.channel().writeAndFlush(byteBuf1);
     }
 }
