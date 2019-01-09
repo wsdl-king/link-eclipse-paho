@@ -23,9 +23,11 @@ public class UpgradeEncoder extends MessageToByteEncoder<LinkMessage> {
             throw new Exception("编码失败,没有数据信息!");
         }
         byte[] bytes = msg.finalUnBuild();
+        //解码器层面直接这样写就OK了
+        out.writeBytes(bytes);
         //尝试使用堆外内存进行读写
-        ByteBuf byteBuf1 = ctx.channel().alloc().directBuffer(bytes.length).writeBytes(bytes);
+//        ByteBuf byteBuf1 = ctx.channel().alloc().directBuffer(bytes.length).writeBytes(bytes);
 //        ByteBuf byteBuf = Unpooled.copiedBuffer(bytes);
-        ctx.channel().writeAndFlush(byteBuf1);
+//        ctx.channel().writeAndFlush(byteBuf1);
     }
 }
