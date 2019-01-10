@@ -2,7 +2,10 @@ package com.qws.link.logout;
 
 import com.qws.link.ByteUtils;
 import com.qws.link.base.ByteArrayBuf;
+import com.qws.link.base.header.FMHeader;
 import com.qws.link.base.pakcet.FMPacket;
+import com.qws.link.codec.CheckCode;
+import jdk.nashorn.api.scripting.ScriptUtils;
 
 import java.io.Serializable;
 
@@ -61,5 +64,26 @@ public class FMLogoutPacket implements FMPacket, Serializable {
     @Override
     public Integer length() {
         return null;
+    }
+
+
+    /**
+     * 登出报文示例
+     */
+    public static void main(String[] args) {
+        FMHeader fmHeader = new FMHeader("!!", 4, 254, "FM-12345678901234", 1, 8);
+        byte[] header = fmHeader.unbuild();
+        String headerString = ByteUtils.asHex(header);
+        FMLogoutPacket fmLogoutPacket = new FMLogoutPacket();
+        fmLogoutPacket.setLogoutSnArg(65530);
+        fmLogoutPacket.setUploadTime(20181115115038L);
+        byte[] packet = fmLogoutPacket.unbuild();
+        String paString = ByteUtils.asHex(packet);
+        byte[] bytes = new byte[1];
+        bytes[0]=CheckCode.mathParity(header,packet);
+        String bcc = ByteUtils.asHex(bytes);
+        System.out.println(headerString);
+        System.out.println(paString);
+        System.out.println(bcc);
     }
 }

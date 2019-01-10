@@ -1,6 +1,8 @@
 package com.qws.link.netty.codec;
 
+import com.qws.link.ByteUtils;
 import com.qws.link.base.ByteArrayBuf;
+import com.qws.link.message.fm.FMMessage;
 import com.qws.link.message.gb.GBMessage;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
@@ -37,7 +39,8 @@ public class UpgradeDecoder extends LengthFieldBasedFrameDecoder {
         byte[] bytes = new byte[frame.readableBytes()];
         //将bytebuf中的数据拷贝到字节数组中
         frame.readBytes(bytes);
-        return new GBMessage().build(ByteArrayBuf.wrap(bytes));
+        System.out.println(ByteUtils.asHex(bytes));
+        return new FMMessage().build(ByteArrayBuf.wrap(bytes));
     }
 
 }

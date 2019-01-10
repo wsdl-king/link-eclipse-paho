@@ -13,6 +13,8 @@ public abstract class LinkMessage {
 
     protected BaseHeader baseHeader;
     protected BasePacket basePacket;
+
+    // 预留项,目前只有 GB  and FM
     protected String type;
 
     public LinkMessage(BaseHeader baseHeader, BasePacket basePacket, String type) {

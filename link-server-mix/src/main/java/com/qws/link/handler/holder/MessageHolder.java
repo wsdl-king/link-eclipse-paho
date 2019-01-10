@@ -20,7 +20,7 @@ public class MessageHolder {
 
 
     public void messageArrived(long time, LinkMessage linkMessage) {
-        PacketServerHandler packetServerHandler = new PacketServerHandler(linkMessage, time, kafkaTemplate, "GB");
+        PacketServerHandler packetServerHandler = new PacketServerHandler(linkMessage, time, kafkaTemplate, "FM");
         LinkDispatchManager.getInstance().addRunnable(packetServerHandler);
     }
 

@@ -3,7 +3,7 @@ package com.qws.link.constant.down;
 /**
  * 下行命令发出枚举实体
  */
-public enum RequestPacketType {
+public enum DownPacketType {
 
     /**
      * 查询命令
@@ -20,7 +20,7 @@ public enum RequestPacketType {
 
     private int command;
 
-    private RequestPacketType(int command) {
+    private DownPacketType(int command) {
         this.command = command;
     }
 

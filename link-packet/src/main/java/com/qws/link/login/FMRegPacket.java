@@ -2,7 +2,9 @@ package com.qws.link.login;
 
 import com.qws.link.ByteUtils;
 import com.qws.link.base.ByteArrayBuf;
-import com.qws.link.base.pakcet.GBPacket;
+import com.qws.link.base.header.FMHeader;
+import com.qws.link.base.pakcet.FMPacket;
+import com.qws.link.codec.CheckCode;
 
 import java.io.Serializable;
 import java.util.Arrays;
@@ -12,7 +14,7 @@ import java.util.Arrays;
  * @note FM登入协议
  * @since 19-1-10 11:13 by jdk 1.8
  */
-public class FMRegPacket implements GBPacket, Serializable {
+public class FMRegPacket implements FMPacket, Serializable {
 
 
     private static final long serialVersionUID = -3482417664559338642L;
@@ -47,7 +49,7 @@ public class FMRegPacket implements GBPacket, Serializable {
      */
     private Integer sLength;
     /**
-     * 软件版本 n
+     * 软件版本 m
      */
     private String sValue;
 
@@ -62,7 +64,7 @@ public class FMRegPacket implements GBPacket, Serializable {
     private Integer attachLength;
 
     /**
-     * 附加数据
+     * 附加数据 x
      */
     private String attachValue;
 
@@ -204,7 +206,12 @@ public class FMRegPacket implements GBPacket, Serializable {
         return null;
     }
 
-    public static void main(String[] args) throws Exception {
+
+    /**
+     * 登录报文示例
+     */
+    public static void main(String[] args) {
+        FMHeader fmHeader = new FMHeader("!!", 1, 254, "FM-12345678901234", 1, 58);
         FMRegPacket fmRegPacket = new FMRegPacket();
         fmRegPacket.setUploadTime(20181115114338L);
         fmRegPacket.setLoginSnArg(65530);
@@ -217,12 +224,21 @@ public class FMRegPacket implements GBPacket, Serializable {
         fmRegPacket.setRunStatus(1);
         fmRegPacket.setAttachLength(2);
         fmRegPacket.setAttachValue("hh");
-        byte[] unbuild = fmRegPacket.unbuild();
-        System.out.println(unbuild);
-        String s = ByteUtils.asHex(unbuild);
-        byte[] bytes = ByteUtils.hexStringToBytes(s);
-        System.out.println(s);
-        System.out.println(bytes);
+        byte[] packetBytes = fmRegPacket.unbuild();
+        String p = ByteUtils.asHex(packetBytes);
+
+        byte[] headerBytes = fmHeader.unbuild();
+        byte bcc = CheckCode.mathParity(headerBytes, packetBytes);
+        String h = ByteUtils.asHex(headerBytes);
+        byte[] bytes = new byte[1];
+        bytes[0] = bcc;
+        byte[] bytes1 = ByteUtils.addAll(headerBytes, packetBytes, bcc);
+        String b = ByteUtils.asHex(bytes);
+        System.out.println(h);
+        System.out.println(p);
+        System.out.println(b);
+
+        System.out.println(ByteUtils.asHex(bytes1));
 
     }
 }
