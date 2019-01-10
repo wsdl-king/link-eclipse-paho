@@ -1,7 +1,7 @@
 package com.qws.link.netty.codec;
 
 import com.qws.link.base.ByteArrayBuf;
-import com.qws.link.mqtt.gb.GBMessage;
+import com.qws.link.message.gb.GBMessage;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;

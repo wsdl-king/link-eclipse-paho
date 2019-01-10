@@ -2,16 +2,20 @@ package com.qws.link.logout;
 
 import com.qws.link.ByteUtils;
 import com.qws.link.base.ByteArrayBuf;
-import com.qws.link.base.pakcet.GBPacket;
+import com.qws.link.base.pakcet.FMPacket;
 
 import java.io.Serializable;
 
 /**
- * 车辆登出数据包
+ * @author qiwenshuai
+ * @note
+ * @since 19-1-10 14:48 by jdk 1.8
  */
-public class LogoutPacket implements GBPacket, Serializable {
+public class FMLogoutPacket implements FMPacket, Serializable {
 
-    private static final long serialVersionUID = -836128709201307720L;
+
+    private static final long serialVersionUID = 4927025691701709449L;
+
     /**
      * 时间
      */

@@ -1,10 +1,10 @@
-package com.qws.link.mqtt.holder;
+package com.qws.link.message.holder;
 
-import com.qws.link.mqtt.client.MqClient;
+import com.qws.link.message.client.MqClient;
 import com.qws.link.base.header.GBHeader;
 import com.qws.link.base.pakcet.GBPacket;
-import com.qws.link.mqtt.build.MqMessageBuilder;
-import com.qws.link.mqtt.gb.GBMessage;
+import com.qws.link.message.build.MqMessageBuilder;
+import com.qws.link.message.gb.GBMessage;
 import com.qws.link.prototype.GBStrategy;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;

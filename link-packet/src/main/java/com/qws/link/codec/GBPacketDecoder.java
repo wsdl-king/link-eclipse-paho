@@ -6,8 +6,7 @@ import com.qws.link.base.ByteArrayBuf;
 import com.qws.link.base.header.GBHeader;
 import com.qws.link.base.pakcet.GBPacket;
 import com.qws.link.constant.PacketEnum;
-import com.qws.link.mqtt.gb.GBMessage;
-import com.qws.link.mqtt.message.LinkMessage;
+import com.qws.link.message.gb.GBMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

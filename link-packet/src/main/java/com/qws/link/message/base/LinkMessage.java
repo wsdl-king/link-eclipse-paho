@@ -1,9 +1,8 @@
-package com.qws.link.mqtt.message;
+package com.qws.link.message.base;
 
 import com.qws.link.base.ByteArrayBuf;
 import com.qws.link.base.header.BaseHeader;
 import com.qws.link.base.pakcet.BasePacket;
-import com.qws.link.mqtt.gb.GBMessage;
 
 /**
  * @author qiwenshuai

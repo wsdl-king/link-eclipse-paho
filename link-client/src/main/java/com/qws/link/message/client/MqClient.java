@@ -1,7 +1,7 @@
-package com.qws.link.mqtt.client;
+package com.qws.link.message.client;
 
-import com.qws.link.mqtt.callback.LinkSendCallBack;
-import com.qws.link.mqtt.config.MqConfig;
+import com.qws.link.message.callback.LinkSendCallBack;
+import com.qws.link.message.config.MqConfig;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;

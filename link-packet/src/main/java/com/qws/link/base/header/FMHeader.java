@@ -1,6 +1,5 @@
 package com.qws.link.base.header;
 
-
 import com.qws.link.ByteUtils;
 import com.qws.link.base.ByteArrayBuf;
 
@@ -8,17 +7,20 @@ import java.io.Serializable;
 import java.util.Arrays;
 
 /**
- * 国标基础数据头
+ * @author qiwenshuai
+ * @note FM 协议开头
+ * @since 19-1-10 10:03 by jdk 1.8
  */
-public class GBHeader implements BaseHeader, Serializable {
-    private static final long serialVersionUID = 4052655707145506882L;
+public class FMHeader implements BaseHeader, Serializable {
 
+    private static final long serialVersionUID = -5037821311149783519L;
     public static final int HEADER_LENGTH = 24;
 
-    public static final String HEADER_BEGIN = "##";
+    public static final String HEADER_BEGIN = "!!";
+
 
     /**
-     * 一般已##开头
+     * 此处以!!开头,对应的hex为 0x21,0x21
      */
     private String begin;
     /**
@@ -30,11 +32,11 @@ public class GBHeader implements BaseHeader, Serializable {
      */
     private int answer;
     /**
-     * 识别码(vin)
+     * 识别码(sn)
      */
-    private String vin;
+    private String sn;
     /**
-     * 加密类型
+     * 加密类型 0x01 不加密,0x03 AES128
      */
     private int encryptType;
     /**
@@ -42,18 +44,18 @@ public class GBHeader implements BaseHeader, Serializable {
      */
     private int dataLength;
 
-    public GBHeader(String begin, int command, int answer, String vin,
+    public FMHeader(String begin, int command, int answer, String sn,
                     int encryptType, int dataLength) {
         super();
         this.begin = begin;
         this.command = command;
         this.answer = answer;
-        this.vin = vin;
+        this.sn = sn;
         this.encryptType = encryptType;
         this.dataLength = dataLength;
     }
 
-    public GBHeader(ByteArrayBuf byteBuf) {
+    public FMHeader(ByteArrayBuf byteBuf) {
         build(byteBuf);
     }
 
@@ -66,12 +68,12 @@ public class GBHeader implements BaseHeader, Serializable {
         this.begin = begin;
     }
 
-    public String getVin() {
-        return vin;
+    public String getSn() {
+        return sn;
     }
 
-    public void setVin(String vin) {
-        this.vin = vin;
+    public void setSn(String sn) {
+        this.sn = sn;
     }
 
     public int getDataLength() {
@@ -109,7 +111,7 @@ public class GBHeader implements BaseHeader, Serializable {
     @Override
     public String toString() {
         return "FMHeader [begin=" + begin + ", command=" + command
-                + ", answer=" + answer + ", vin=" + vin + ", encryptType="
+                + ", answer=" + answer + ", sn=" + sn + ", encryptType="
                 + encryptType + ", dataLength=" + dataLength + "]";
     }
 
@@ -118,7 +120,7 @@ public class GBHeader implements BaseHeader, Serializable {
         begin = new String(byteBuf.readBytes(2));
         command = ByteUtils.toInt(byteBuf.readByte());
         answer = byteBuf.readByte();
-        vin = new String(byteBuf.readBytes(17)).trim();
+        sn = new String(byteBuf.readBytes(17)).trim();
         encryptType = ByteUtils.isCorrectData(byteBuf.readByte()) ? byteBuf.getByte(21) : -1;
         dataLength = ByteUtils.byteArrayToInt(new byte[]{0x00, 0x00, byteBuf.readByte(), byteBuf.readByte()}, 0);
     }
@@ -128,17 +130,22 @@ public class GBHeader implements BaseHeader, Serializable {
         byte[] beginBytes = begin.getBytes();
         byte commonByte = ByteUtils.intToByteArray(command)[3];
         byte answerByte = ByteUtils.intToByteArray(answer)[3];
-        byte[] vinBytes = vin.getBytes();
-        if (vinBytes.length < 17) {
-            vinBytes = Arrays.copyOf(vinBytes, 17);
+        byte[] snBytes = sn.getBytes();
+        if (snBytes.length < 17) {
+            snBytes = Arrays.copyOf(snBytes, 17);
         }
         byte encryptTypeByte = ByteUtils.intToByteArray(encryptType)[3];
         byte[] lengthBytes = ByteUtils.intToByteArray2(dataLength);
-        byte[] result = new byte[beginBytes.length + vinBytes.length + 5];
+        //24
+        byte[] result = new byte[beginBytes.length + snBytes.length + 5];
         System.arraycopy(beginBytes, 0, result, 0, beginBytes.length);
+        //2
         result[beginBytes.length] = commonByte;
+        //3
         result[beginBytes.length + 1] = answerByte;
-        System.arraycopy(vinBytes, 0, result, beginBytes.length + 2, vinBytes.length);
+        //4,17
+        System.arraycopy(snBytes, 0, result, beginBytes.length + 2, snBytes.length);
+        //
         result[result.length - 3] = encryptTypeByte;
         result[result.length - 2] = lengthBytes[0];
         result[result.length - 1] = lengthBytes[1];
@@ -148,11 +155,5 @@ public class GBHeader implements BaseHeader, Serializable {
     @Override
     public Integer length() {
         return null;
-    }
-
-    public static void main(String[] args) {
-        byte[] lengthBytes = ByteUtils.intToByteArray2(65530);
-        int i = ByteUtils.byteArrayToInt(new byte[]{0x00, 0x00, 0x00, -1}, 0);
-        System.out.println(i);
     }
 }

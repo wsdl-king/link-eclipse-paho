@@ -2,7 +2,7 @@ package com.qws.link.handler.holder;
 
 import com.qws.link.handler.manager.LinkDispatchManager;
 import com.qws.link.handler.server.PacketServerHandler;
-import com.qws.link.mqtt.message.LinkMessage;
+import com.qws.link.message.base.LinkMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;

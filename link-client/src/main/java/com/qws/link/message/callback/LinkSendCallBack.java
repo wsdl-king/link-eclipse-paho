@@ -1,4 +1,4 @@
-package com.qws.link.mqtt.callback;
+package com.qws.link.message.callback;
 
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallbackExtended;

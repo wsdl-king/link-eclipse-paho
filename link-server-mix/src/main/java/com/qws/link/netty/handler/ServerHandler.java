@@ -4,7 +4,7 @@ import com.qws.link.SpringBeanUtils;
 import com.qws.link.entity.ChannelAttr;
 import com.qws.link.entity.ChannelMap;
 import com.qws.link.handler.holder.MessageHolder;
-import com.qws.link.mqtt.message.LinkMessage;
+import com.qws.link.message.base.LinkMessage;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;

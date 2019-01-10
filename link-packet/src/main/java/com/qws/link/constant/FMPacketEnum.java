@@ -1,9 +1,9 @@
 package com.qws.link.constant;
 
-import com.qws.link.base.pakcet.GBPacket;
-import com.qws.link.login.RegPacket;
+import com.qws.link.base.pakcet.FMPacket;
+import com.qws.link.login.FMRegPacket;
+import com.qws.link.logout.FMLogoutPacket;
 import com.qws.link.logout.LogoutPacket;
-import com.qws.link.realtime.base.RealTimePacket;
 
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -11,17 +11,18 @@ import java.util.Map;
 
 /**
  * @author qiwenshuai
- * @note 枚举类,  参照国标协议
- * @since 18-12-17 14:28 by jdk 1.8
+ * @note FM packet专用枚举
+ * @since 19-1-10 11:12 by jdk 1.8
  */
-public enum PacketEnum {
+public enum FMPacketEnum {
+
     //车辆登入
-    LOGIN(0x01, RegPacket.class),
+    LOGIN(0x01, FMRegPacket.class),
     //实时信息上报
-    REALTIME(0x02, RealTimePacket.class),
+//    REALTIME(0x02, RealTimePacket.class),
     //补发信息上报
     //车辆登出
-    LOGOUT(0x04, LogoutPacket.class);
+    LOGOUT(0x04, FMLogoutPacket.class);
     //平台数据传输
     //心跳
     //终端校时
@@ -43,7 +44,7 @@ public enum PacketEnum {
      */
     private Class<?> classType;
 
-    PacketEnum(int command, Class<?> classType) {
+    FMPacketEnum(int command, Class<?> classType) {
         this.command = command;
         this.classType = classType;
     }
@@ -56,28 +57,28 @@ public enum PacketEnum {
         return classType;
     }
 
-    public static final Map<Integer, PacketEnum> responsePacketTypeMap = new HashMap<>();
+    public static final Map<Integer, FMPacketEnum> responsePacketTypeMap = new HashMap<>();
 
     static {
 
-        for (PacketEnum type : EnumSet.allOf(PacketEnum.class)) {
+        for (FMPacketEnum type : EnumSet.allOf(FMPacketEnum.class)) {
             responsePacketTypeMap.put(type.getCommand(), type);
         }
     }
 
 
-    public static Map<Integer, PacketEnum> getResponsePacketTypeMap() {
+    public static Map<Integer, FMPacketEnum> getResponsePacketTypeMap() {
         return responsePacketTypeMap;
     }
 
 
-    public static PacketEnum getResponsePacketTypeByCommand(int command) {
+    public static FMPacketEnum getResponsePacketTypeByCommand(int command) {
 
         return responsePacketTypeMap.containsKey(command) ? responsePacketTypeMap.get(command) : null;
     }
 
-    public GBPacket getResponsePacketInstance() throws IllegalAccessException, InstantiationException {
+    public FMPacket getResponsePacketInstance() throws IllegalAccessException, InstantiationException {
 
-        return (GBPacket) this.classType.newInstance();
+        return (FMPacket) this.classType.newInstance();
     }
 }

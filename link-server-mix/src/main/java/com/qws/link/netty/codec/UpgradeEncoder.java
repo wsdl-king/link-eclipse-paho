@@ -1,6 +1,6 @@
 package com.qws.link.netty.codec;
 
-import com.qws.link.mqtt.message.LinkMessage;
+import com.qws.link.message.base.LinkMessage;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToByteEncoder;

@@ -4,7 +4,7 @@ package com.qws.link.codec;
 import com.qws.link.ByteUtils;
 import com.qws.link.base.header.GBHeader;
 import com.qws.link.base.pakcet.GBPacket;
-import com.qws.link.mqtt.gb.GBMessage;
+import com.qws.link.message.gb.GBMessage;
 
 /**
  * 国标协议编码

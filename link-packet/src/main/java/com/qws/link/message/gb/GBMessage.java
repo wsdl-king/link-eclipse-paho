@@ -1,4 +1,4 @@
-package com.qws.link.mqtt.gb;
+package com.qws.link.message.gb;
 
 
 import com.alibaba.fastjson.JSON;
@@ -10,7 +10,7 @@ import com.qws.link.base.pakcet.BasePacket;
 import com.qws.link.base.pakcet.GBPacket;
 import com.qws.link.codec.CheckCode;
 import com.qws.link.constant.PacketEnum;
-import com.qws.link.mqtt.message.LinkMessage;
+import com.qws.link.message.base.LinkMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,9 +44,6 @@ public class GBMessage extends LinkMessage implements Serializable {
         super();
     }
 
-    /**
-     * mqtt拿到的数据,解锁为实体
-     */
     public Integer getLength() {
         return length;
     }

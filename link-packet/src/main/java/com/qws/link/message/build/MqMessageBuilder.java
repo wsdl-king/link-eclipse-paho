@@ -1,6 +1,6 @@
-package com.qws.link.mqtt.build;
+package com.qws.link.message.build;
 
-import com.qws.link.mqtt.message.LinkMessage;
+import com.qws.link.message.base.LinkMessage;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 /**
