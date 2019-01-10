@@ -32,17 +32,16 @@ public class ServerHandler extends SimpleChannelInboundHandler<LinkMessage> {
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) {
-        AttributeKey<Object> objectAttributeKey = AttributeKey.valueOf(CHANNEL);
-        ChannelAttr channelAttr = new ChannelAttr();
-        ctx.channel().attr(objectAttributeKey).set(channelAttr);
-        channelAttr.setDeviceId("123456");
-        ChannelMap.addChannelMap("test", ctx.channel());
         logger.info("Channel  already completed ");
     }
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) {
         //通道关闭的操作
+        AttributeKey<Object> objectAttributeKey = AttributeKey.valueOf(String.valueOf(CHANNEL));
+        ChannelAttr channelAttr = (ChannelAttr) ctx.channel().attr(objectAttributeKey).get();
+        String sn = channelAttr.getSn();
+        ChannelMap.removeChannel(sn);
         logger.info("close success,address is: {}", ctx.channel().localAddress());
     }
 
@@ -70,6 +69,6 @@ public class ServerHandler extends SimpleChannelInboundHandler<LinkMessage> {
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, LinkMessage msg) {
         MessageHolder messageHolder = SpringBeanUtils.getBean(MessageHolder.class);
-        messageHolder.messageArrived(1000L, msg);
+        messageHolder.messageArrived(1000L, msg,ctx.channel());
     }
 }

@@ -56,10 +56,8 @@ public class ChannelMap {
     public static void removeChannel(String key) {
         if (CHANNEL_CONCURRENT_HASH_MAP.containsKey(key)) {
             synchronized (ChannelMap.class) {
-                if (CHANNEL_CONCURRENT_HASH_MAP.containsKey(key)) {
-                    // 如果对应的key已经在map中存在,那么就不允许添加.
-                    CHANNEL_CONCURRENT_HASH_MAP.remove(key);
-                }
+                // 如果对应的key已经在map中存在,那么就不允许添加.
+                CHANNEL_CONCURRENT_HASH_MAP.remove(key);
             }
         }
     }

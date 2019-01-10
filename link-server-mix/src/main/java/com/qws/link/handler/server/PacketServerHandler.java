@@ -6,9 +6,14 @@ import com.qws.link.base.pakcet.FMPacket;
 import com.qws.link.base.pakcet.GBPacket;
 import com.qws.link.constant.FMPacketEnum;
 import com.qws.link.constant.PacketEnum;
+import com.qws.link.entity.ChannelAttr;
+import com.qws.link.entity.ChannelMap;
 import com.qws.link.message.fm.FMMessage;
 import com.qws.link.message.gb.GBMessage;
 import com.qws.link.message.base.LinkMessage;
+import com.qws.link.send.SendServer;
+import io.netty.channel.Channel;
+import io.netty.util.AttributeKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -21,12 +26,22 @@ import org.springframework.kafka.core.KafkaTemplate;
 public class PacketServerHandler extends AbstractExecutor {
 
 
+    private static final String CHANNEL = "netty.channel";
+
     private static final Logger logger = LoggerFactory.getLogger(PacketServerHandler.class);
 
 
     private LinkMessage linkMessage;
 
+    /**
+     * 服务器接受报文时间
+     */
     private Long serverTime;
+
+    /**
+     * 登录管道
+     */
+    private Channel channel;
 
     private KafkaTemplate<String, String> kafkaTemplate;
 
@@ -35,10 +50,11 @@ public class PacketServerHandler extends AbstractExecutor {
      */
     private String type;
 
-    public PacketServerHandler(LinkMessage linkMessage, Long serverTime, KafkaTemplate<String, String> kafkaTemplate, String type) {
+    public PacketServerHandler(LinkMessage linkMessage, Long serverTime, KafkaTemplate<String, String> kafkaTemplate, String type, Channel channel) {
         this.linkMessage = linkMessage;
         this.serverTime = serverTime;
         this.kafkaTemplate = kafkaTemplate;
+        this.channel = channel;
         this.type = type;
     }
 
@@ -52,7 +68,6 @@ public class PacketServerHandler extends AbstractExecutor {
                     GBPacket gbPacket = (GBPacket) gbMessage.getBasePacket();
                     // 根据header携带的command命令类型进行不同服务的调用
                     PacketEnum packetType = PacketEnum.getResponsePacketTypeByCommand(gbHeader.getCommand());
-                    System.out.println(packetType.name());
                     break;
                 case "FM":
                     FMMessage fmMessage = (FMMessage) linkMessage;
@@ -60,18 +75,47 @@ public class PacketServerHandler extends AbstractExecutor {
                     FMPacket fmPacket = (FMPacket) fmMessage.getBasePacket();
                     // 根据header携带的command命令类型进行不同服务的调用
                     FMPacketEnum fmPacketEnum = FMPacketEnum.getResponsePacketTypeByCommand(fmHeader.getCommand());
-                    System.out.println(fmPacketEnum.name());
+                    if (null == fmPacketEnum) {
+                        throw new IllegalArgumentException("没有找到与之对应解析类型, fmPacketEnum 为null");
+                    }
+                    processingMessages(fmPacketEnum, fmHeader);
                     break;
                 default:
                     break;
-
             }
-
+            //发给你应答包,告诉盒子俺收到了
+            SendServer.sendFMReceivedPacket(linkMessage);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
         }
-//         kafkaTemplate.send("otaUpgrade","otaUpgrade");
+    }
 
+    //如果是登录的话 需要sn和channel进行绑定
+    private void bindChannel(String sn) {
+        AttributeKey<Object> objectAttributeKey = AttributeKey.valueOf(CHANNEL);
+        ChannelAttr channelAttr = new ChannelAttr();
+        channelAttr.setSn(sn);
+        channel.attr(objectAttributeKey).set(channelAttr);
+        ChannelMap.addChannelMap(sn, channel);
+    }
+
+    private void processingMessages(FMPacketEnum packetType, FMHeader fmHeader) {
+        String sn = fmHeader.getSn();
+        if (packetType.getCommand() == 0x01) {
+            //登录
+            //sn和channel进行绑定
+            bindChannel(sn);
+            //登录逻辑
+        } else if (packetType.getCommand() == 0x04) {
+            //登出
+            if (null == ChannelMap.getChannel(sn)) {
+                //未登录就登出
+                throw new IllegalArgumentException("车辆未登录就出现了登出包,未存在补发数据,拒绝应答");
+            } else {
+                //登出逻辑 kafka等
+                System.out.println("我要登录出去了 ");
+            }
+        }
     }
 
 }

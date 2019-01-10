@@ -3,6 +3,7 @@ package com.qws.link.handler.holder;
 import com.qws.link.handler.manager.LinkDispatchManager;
 import com.qws.link.handler.server.PacketServerHandler;
 import com.qws.link.message.base.LinkMessage;
+import io.netty.channel.Channel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
@@ -19,8 +20,8 @@ public class MessageHolder {
     KafkaTemplate kafkaTemplate;
 
 
-    public void messageArrived(long time, LinkMessage linkMessage) {
-        PacketServerHandler packetServerHandler = new PacketServerHandler(linkMessage, time, kafkaTemplate, "FM");
+    public void messageArrived(long time, LinkMessage linkMessage, Channel channel) {
+        PacketServerHandler packetServerHandler = new PacketServerHandler(linkMessage, time, kafkaTemplate, "FM",channel);
         LinkDispatchManager.getInstance().addRunnable(packetServerHandler);
     }
 
