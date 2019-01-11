@@ -70,6 +70,7 @@ public class NettyServer {
                 return new Thread(r, "WORK_" + index.incrementAndGet());
             }
         });
+        //记住 child* 的方法都是操作在子的 Channel，被 ServerChannel 管理。
         bootstrap.group(bossGroup, workGroup)
                 .channel(NioServerSocketChannel.class)
                 .option(ChannelOption.SO_REUSEADDR, true)

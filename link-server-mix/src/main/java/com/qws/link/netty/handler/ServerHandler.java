@@ -69,6 +69,11 @@ public class ServerHandler extends SimpleChannelInboundHandler<LinkMessage> {
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, LinkMessage msg) {
         MessageHolder messageHolder = SpringBeanUtils.getBean(MessageHolder.class);
-        messageHolder.messageArrived(1000L, msg,ctx.channel());
+        messageHolder.messageArrived(1000L, msg, ctx.channel());
+    }
+
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
+        logger.error("服务端处理出现错误{}", cause.getMessage());
     }
 }

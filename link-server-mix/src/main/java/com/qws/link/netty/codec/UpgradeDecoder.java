@@ -3,10 +3,11 @@ package com.qws.link.netty.codec;
 import com.qws.link.ByteUtils;
 import com.qws.link.base.ByteArrayBuf;
 import com.qws.link.message.fm.FMMessage;
-import com.qws.link.message.gb.GBMessage;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -15,6 +16,8 @@ import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
  * @since 19-1-5 16:27 by jdk 1.8
  */
 public class UpgradeDecoder extends LengthFieldBasedFrameDecoder {
+
+    private static final Logger logger = LoggerFactory.getLogger(UpgradeDecoder.class);
 
     /**
      * @param maxFrameLength      帧的最大长度
@@ -43,4 +46,10 @@ public class UpgradeDecoder extends LengthFieldBasedFrameDecoder {
         return new FMMessage().build(ByteArrayBuf.wrap(bytes));
     }
 
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
+        //解码出错在当前捕获,然后super.exceptionCaught(ctx,cause) 到下一层的ChannelInboundHandler
+        // 这里的bytebuf在上一层是被释放的
+        logger.error("解码出现错误{}", cause.getMessage());
+    }
 }
