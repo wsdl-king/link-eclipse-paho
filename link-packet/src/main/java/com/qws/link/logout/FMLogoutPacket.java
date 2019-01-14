@@ -5,7 +5,6 @@ import com.qws.link.base.ByteArrayBuf;
 import com.qws.link.base.header.FMHeader;
 import com.qws.link.base.pakcet.FMPacket;
 import com.qws.link.codec.CheckCode;
-import jdk.nashorn.api.scripting.ScriptUtils;
 
 import java.io.Serializable;
 

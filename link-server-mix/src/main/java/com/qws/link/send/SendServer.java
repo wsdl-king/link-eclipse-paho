@@ -1,6 +1,6 @@
 package com.qws.link.send;
 
-import com.qws.link.ReceivePacket;
+import com.qws.link.answer.ReceivePacket;
 import com.qws.link.base.header.FMHeader;
 import com.qws.link.entity.ChannelMap;
 import com.qws.link.message.base.LinkMessage;

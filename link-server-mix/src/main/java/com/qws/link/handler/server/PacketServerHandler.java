@@ -1,5 +1,6 @@
 package com.qws.link.handler.server;
 
+import com.alibaba.fastjson.JSON;
 import com.qws.link.base.header.FMHeader;
 import com.qws.link.base.header.GBHeader;
 import com.qws.link.base.pakcet.FMPacket;
@@ -8,6 +9,9 @@ import com.qws.link.constant.FMPacketEnum;
 import com.qws.link.constant.PacketEnum;
 import com.qws.link.entity.ChannelAttr;
 import com.qws.link.entity.ChannelMap;
+import com.qws.link.exception.MessageTypeNotFoundException;
+import com.qws.link.login.FMRegPacket;
+import com.qws.link.logout.FMLogoutPacket;
 import com.qws.link.message.fm.FMMessage;
 import com.qws.link.message.gb.GBMessage;
 import com.qws.link.message.base.LinkMessage;
@@ -76,9 +80,9 @@ public class PacketServerHandler extends AbstractExecutor {
                     // 根据header携带的command命令类型进行不同服务的调用
                     FMPacketEnum fmPacketEnum = FMPacketEnum.getResponsePacketTypeByCommand(fmHeader.getCommand());
                     if (null == fmPacketEnum) {
-                        throw new IllegalArgumentException("没有找到与之对应解析类型, fmPacketEnum 为null");
+                        throw new MessageTypeNotFoundException("没有找到与之对应解析类型, fmPacketEnum 为null");
                     }
-                    processingMessages(fmPacketEnum, fmHeader);
+                    processingMessages(fmPacketEnum, fmHeader, fmPacket);
                     break;
                 default:
                     break;
@@ -99,22 +103,31 @@ public class PacketServerHandler extends AbstractExecutor {
         ChannelMap.addChannelMap(sn, channel);
     }
 
-    private void processingMessages(FMPacketEnum packetType, FMHeader fmHeader) {
+    private void processingMessages(FMPacketEnum packetType, FMHeader fmHeader, FMPacket fmPacket) throws Exception {
         String sn = fmHeader.getSn();
-        if (packetType.getCommand() == 0x01) {
-            //登录
-            //sn和channel进行绑定
-            bindChannel(sn);
-            //登录逻辑
-        } else if (packetType.getCommand() == 0x04) {
-            //登出
-            if (null == ChannelMap.getChannel(sn)) {
-                //未登录就登出
-                throw new IllegalArgumentException("车辆未登录就出现了登出包,未存在补发数据,拒绝应答");
-            } else {
-                //登出逻辑 kafka等
-                System.out.println("我要登录出去了 ");
-            }
+        switch (packetType) {
+            case LOGIN:
+                //登录
+                //sn和channel进行绑定--这个还是要考虑 以哪个为优先绑定
+                bindChannel(sn);
+                //登录逻辑
+                if (fmPacket instanceof FMRegPacket) {
+                    FMRegPacket regPacket = (FMRegPacket) fmPacket;
+                    kafkaTemplate.send("mytopic", fmHeader.getSn(), JSON.toJSONString(regPacket));
+                }
+                break;
+            case LOGOUT:
+                //登出
+                if (null == ChannelMap.getChannel(sn)) {
+                    //未登录就登出
+                    throw new IllegalArgumentException("车辆未登录就出现了登出包,未存在补发数据,拒绝应答");
+                } else {
+                    //登出逻辑 kafka等
+                    System.out.println("我要登录出去了 ");
+                }
+                break;
+            default:
+                break;
         }
     }
 

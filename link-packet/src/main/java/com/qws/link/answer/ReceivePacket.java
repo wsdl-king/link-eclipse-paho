@@ -1,4 +1,4 @@
-package com.qws.link;
+package com.qws.link.answer;
 
 import com.qws.link.base.ByteArrayBuf;
 import com.qws.link.base.pakcet.BasePacket;
@@ -7,10 +7,10 @@ import java.io.Serializable;
 
 /**
  * @author qiwenshuai
- * @note
+ * @note 应答空包实现
  * @since 19-1-10 17:53 by jdk 1.8
  */
-public class ReceivePacket implements BasePacket,Serializable {
+public class ReceivePacket implements BasePacket, Serializable {
     private static final long serialVersionUID = -6382312489570123041L;
 
     @Override
