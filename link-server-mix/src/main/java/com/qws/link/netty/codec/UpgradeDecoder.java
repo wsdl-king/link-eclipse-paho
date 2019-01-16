@@ -2,6 +2,9 @@ package com.qws.link.netty.codec;
 
 import com.qws.link.ByteUtils;
 import com.qws.link.base.ByteArrayBuf;
+import com.qws.link.base.header.FMHeader;
+import com.qws.link.logback.FMVINMarkerFactory;
+import com.qws.link.message.base.LinkMessage;
 import com.qws.link.message.fm.FMMessage;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
@@ -18,6 +21,8 @@ import org.slf4j.LoggerFactory;
 public class UpgradeDecoder extends LengthFieldBasedFrameDecoder {
 
     private static final Logger logger = LoggerFactory.getLogger(UpgradeDecoder.class);
+
+    private static final Logger packetLog = LoggerFactory.getLogger("packet");
 
     /**
      * @param maxFrameLength      帧的最大长度
@@ -42,8 +47,11 @@ public class UpgradeDecoder extends LengthFieldBasedFrameDecoder {
         byte[] bytes = new byte[frame.readableBytes()];
         //将bytebuf中的数据拷贝到字节数组中
         frame.readBytes(bytes);
-        System.out.println(ByteUtils.asHex(bytes));
-        return new FMMessage().build(ByteArrayBuf.wrap(bytes));
+        LinkMessage message = new FMMessage().build(ByteArrayBuf.wrap(bytes));
+        FMHeader fmHeader = (FMHeader) message.getBaseHeader();
+        String msg = "receive:" + ByteUtils.asHex(bytes);
+        packetLog.info(FMVINMarkerFactory.getMarker(fmHeader.getSn()), msg);
+        return  message;
     }
 
     @Override

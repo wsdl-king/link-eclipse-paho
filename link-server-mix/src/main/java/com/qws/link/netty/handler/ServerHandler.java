@@ -59,8 +59,8 @@ public class ServerHandler extends SimpleChannelInboundHandler<LinkMessage> {
             //这边需要处理超时的操作
             AttributeKey<Object> objectAttributeKey = AttributeKey.valueOf(String.valueOf(CHANNEL));
             ChannelAttr channelAttr = (ChannelAttr) ctx.channel().attr(objectAttributeKey).get();
-            String deviceId = channelAttr.getDeviceId();
-            logger.info("Sorry, I have timed out,My deviceId is {}", deviceId);
+            String sn = channelAttr.getSn();
+            logger.info("Sorry, I have timed out,My sn is {}", sn);
         }
         super.userEventTriggered(ctx, evt);
     }

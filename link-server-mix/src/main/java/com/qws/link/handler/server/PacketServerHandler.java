@@ -113,7 +113,7 @@ public class PacketServerHandler extends AbstractExecutor {
                 //登录逻辑
                 if (fmPacket instanceof FMRegPacket) {
                     FMRegPacket regPacket = (FMRegPacket) fmPacket;
-                    kafkaTemplate.send("mytopic", fmHeader.getSn(), JSON.toJSONString(regPacket));
+//                    kafkaTemplate.send("mytopic", fmHeader.getSn(), JSON.toJSONString(regPacket));
                 }
                 break;
             case LOGOUT:

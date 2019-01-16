@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuration debug="true" scan="true" scanPeriod="30 seconds">
+
+<!--其实这里应该把扫描关掉的,监控日志文件是否发生变化-->
+<configuration debug="true" scan="false" scanPeriod="30 seconds">
     <springProperty scope="context" name="logLevel" source="logging.level"/>
     <springProperty scope="context" name="logPath" source="logging.path"/>
 
@@ -12,7 +14,7 @@
 
 
     <appender name="FILE-OUT" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${logPath}/eureka.log</file>
+        <file>${logPath}/netty.log</file>
         <encoder>
             <pattern>%d{yyyy-MM-dd HH:mm:ss} [%level] [%class:%line] - %m %n</pattern>
         </encoder>
@@ -23,9 +25,43 @@
         </rollingPolicy>
     </appender>
 
+    <appender name="SIFT" class="ch.qos.logback.classic.sift.SiftingAppender">
+        <!-- in the absence of the class attribute, it is assumed that the desired
+            discriminator type is ch.qos.logback.classic.sift.MDCBasedDiscriminator -->
+        <discriminator class="com.qws.link.logback.TSPDiscriminator">
+            <key>vin</key>
+            <defaultValue>unknown</defaultValue>
+        </discriminator>
+        <sift>
+            <appender name="FILE-${vin}"
+                      class="ch.qos.logback.core.rolling.RollingFileAppender">
+                <file>${logPath}/vinlogs/${vin}.log</file>
+                <encoder>
+                    <pattern>%d %m%n</pattern>
+                </encoder>
+                <!--<ImmediateFlush>false</ImmediateFlush>-->
+                <rollingPolicy
+                        class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                    <fileNamePattern>${logPath}/vinlogs/${vin}%d{-yyyy-MM-dd}.log
+                    </fileNamePattern>
+                    <!-- 最多保留多少天的数据 -->
+                    <maxHistory>180</maxHistory>
+                    <!-- 最多保留多大的数据-->
+                    <totalSizeCap>10GB</totalSizeCap>
+                </rollingPolicy>
+            </appender>
+        </sift>
+    </appender>
+
+
+
+    <logger name="packet" additivity="false" level="INFO">
+        <appender-ref ref="SIFT" />
+    </logger>
 
     <root level="info">
         <appender-ref ref="STDOUT" />
         <appender-ref ref="FILE-OUT" />
     </root>
 </configuration>
+
