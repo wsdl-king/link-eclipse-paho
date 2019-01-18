@@ -2,6 +2,7 @@ package com.qws.link.constant;
 
 import com.qws.link.answer.ControlCommandAnswerPacket;
 import com.qws.link.base.pakcet.FMPacket;
+import com.qws.link.check.FMCheckPacket;
 import com.qws.link.login.FMRegPacket;
 import com.qws.link.logout.FMLogoutPacket;
 
@@ -19,7 +20,7 @@ public enum FMPacketEnum {
     //车辆登入
     LOGIN(0x01, FMRegPacket.class),
     //实时信息上报
-//    REALTIME(0x02, RealTimePacket.class),
+//  REALTIME(0x02, RealTimePacket.class),
     //补发信息上报
     //车辆登出
     LOGOUT(0x04, FMLogoutPacket.class),
@@ -31,10 +32,12 @@ public enum FMPacketEnum {
     //设置
     //控制
     //控制应答
-    CONTROLANSWER(0x82, ControlCommandAnswerPacket.class);
+    CONTROLANSWER(0x82, ControlCommandAnswerPacket.class),
     //下行数据系统预留
     //平台交换自定义数据
 
+    //下行升级校验
+    CHECK(0xB2, FMCheckPacket.class);
 
     /**
      * 协议包命令

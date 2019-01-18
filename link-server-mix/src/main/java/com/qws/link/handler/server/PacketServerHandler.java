@@ -66,13 +66,14 @@ public class PacketServerHandler extends AbstractExecutor {
     public void action() {
         try {
             switch (type) {
-                case "GB":
+                //下文是解析国标协议的,目前不做考虑
+              /*  case "GB":
                     GBMessage gbMessage = (GBMessage) linkMessage;
                     GBHeader gbHeader = (GBHeader) gbMessage.getBaseHeader();
                     GBPacket gbPacket = (GBPacket) gbMessage.getBasePacket();
                     // 根据header携带的command命令类型进行不同服务的调用
                     PacketEnum packetType = PacketEnum.getResponsePacketTypeByCommand(gbHeader.getCommand());
-                    break;
+                    break;*/
                 case "FM":
                     FMMessage fmMessage = (FMMessage) linkMessage;
                     FMHeader fmHeader = (FMHeader) fmMessage.getBaseHeader();
@@ -126,6 +127,10 @@ public class PacketServerHandler extends AbstractExecutor {
                     System.out.println("我要登录出去了 ");
                 }
                 break;
+
+            case CONTROLANSWER:
+                //升级命令应答
+
             default:
                 break;
         }

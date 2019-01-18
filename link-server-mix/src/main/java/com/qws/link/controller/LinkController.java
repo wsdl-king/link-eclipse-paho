@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author qiwenshuai
- * @note
+ * @note 升级接口
  * @since 19-1-5 15:58 by jdk 1.8
  */
 @RestController
@@ -63,7 +63,7 @@ public class LinkController {
                 LinkMessage linkMessage = message2bytes(remoteUpgradePacket, code);
                 SendServer.send(code, linkMessage);
             } catch (Exception e) {
-                logger.error("发送命令错误, code :{},exception:{}",code,e);
+                logger.error("发送命令错误, code :{},exception:{}", code, e);
             }
 
         }

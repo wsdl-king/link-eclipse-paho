@@ -53,6 +53,24 @@ public class FMRegPacket implements FMPacket, Serializable {
      */
     private String sValue;
 
+
+    /**
+     * 协议标识 1 (1,2,3,----v1,v2,v3)
+     * */
+    private Integer proFlag;
+
+    /**
+     * sn 17
+     * */
+    private String sn;
+
+
+    /**
+     * 车载终端制造商ID 4字节
+     * */
+    private String manufacturer;
+
+
     /**
      * 终端运行状态 1 0-正常 1-故障
      */
@@ -157,6 +175,30 @@ public class FMRegPacket implements FMPacket, Serializable {
         this.attachValue = attachValue;
     }
 
+    public Integer getProFlag() {
+        return proFlag;
+    }
+
+    public void setProFlag(Integer proFlag) {
+        this.proFlag = proFlag;
+    }
+
+    public String getSn() {
+        return sn;
+    }
+
+    public void setSn(String sn) {
+        this.sn = sn;
+    }
+
+    public String getManufacturer() {
+        return manufacturer;
+    }
+
+    public void setManufacturer(String manufacturer) {
+        this.manufacturer = manufacturer;
+    }
+
     @Override
     public void build(ByteArrayBuf buf) throws Exception {
         uploadTime = ByteUtils.dateBytes2Long(buf.readBytes(6));
@@ -167,6 +209,9 @@ public class FMRegPacket implements FMPacket, Serializable {
         fValue = ByteUtils.getStringFromBytes(buf.readBytes(fLength));
         sLength = ByteUtils.toInt(buf.readByte());
         sValue = ByteUtils.getStringFromBytes(buf.readBytes(sLength));
+        proFlag = ByteUtils.toInt(buf.readByte());
+        sn = ByteUtils.getStringFromBytes(buf.readBytes(17));
+        manufacturer = ByteUtils.getStringFromBytes(buf.readBytes(20));
         runStatus = ByteUtils.toInt(buf.readByte());
         attachLength = ByteUtils.toInt(buf.readByte());
         attachValue = ByteUtils.getStringFromBytes(buf.readBytes(attachLength));
@@ -180,9 +225,9 @@ public class FMRegPacket implements FMPacket, Serializable {
         // iccid
         byte[] iccidBytes = this.iccid.getBytes();
         //目前参考以0补齐, 协议是无效全为0xff
-        byte[] snBytes = this.vin.getBytes();
-        if (snBytes.length < 17) {
-            snBytes = Arrays.copyOf(snBytes, 17);
+        byte[] vinBytes = this.vin.getBytes();
+        if (vinBytes.length < 17) {
+            vinBytes = Arrays.copyOf(vinBytes, 17);
         }
         //硬件长度 1字节
         byte[] fLengthBytes = ByteUtils.intToByteArray(fLength, 1);
@@ -192,13 +237,22 @@ public class FMRegPacket implements FMPacket, Serializable {
         byte[] sLengthBytes = ByteUtils.intToByteArray(sLength, 1);
         //软件版本
         byte[] sValueBytes = ByteUtils.string2Bytes(sValue);
+        //协议标识
+        byte[] proBytes = ByteUtils.intToByteArray(proFlag, 1);
+        //sn
+        byte[] snBytes = this.sn.getBytes();
+        if (snBytes.length < 17) {
+            snBytes = Arrays.copyOf(snBytes, 17);
+        }
+        //车载终端制造商ID
+        byte[] maBytes = this.manufacturer.getBytes();
         //终端运行状态
         byte[] runBytes = ByteUtils.intToByteArray(runStatus, 1);
         //附加数据长度
         byte[] attLengthBytes = ByteUtils.intToByteArray(attachLength, 1);
         //附加数据
         byte[] attValueBytes = ByteUtils.string2Bytes(attachValue);
-        return ByteUtils.addAll(uploadTimeBytes, loginSnArgBytes, iccidBytes, snBytes, fLengthBytes, fValueBytes, sLengthBytes, sValueBytes, runBytes, attLengthBytes, attValueBytes);
+        return ByteUtils.addAll(uploadTimeBytes, loginSnArgBytes, iccidBytes, vinBytes, fLengthBytes, fValueBytes, sLengthBytes, sValueBytes,proBytes,snBytes,maBytes, runBytes, attLengthBytes, attValueBytes);
     }
 
     @Override

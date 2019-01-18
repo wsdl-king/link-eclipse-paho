@@ -10,7 +10,7 @@ import java.io.Serializable;
 
 /**
  * @author qiwenshuai
- * @note
+ * @note FM登出包
  * @since 19-1-10 14:48 by jdk 1.8
  */
 public class FMLogoutPacket implements FMPacket, Serializable {

@@ -49,7 +49,7 @@ public class SendServer {
 
     private static void closeChannel(String sn) {
           Channel  channel = ChannelMap.getChannel(sn);
-                channel.close();
+         if(channel!=null)  channel.close();
         }
 
 }
