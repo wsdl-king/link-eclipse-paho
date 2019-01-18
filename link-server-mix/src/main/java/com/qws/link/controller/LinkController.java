@@ -4,15 +4,16 @@ import com.qws.link.ByteUtils;
 import com.qws.link.base.ByteArrayBuf;
 import com.qws.link.base.header.FMHeader;
 import com.qws.link.base.pakcet.BasePacket;
+import com.qws.link.check.FMCheckPacket;
 import com.qws.link.codec.CheckCode;
 import com.qws.link.down.RemoteUpgradePacket;
+import com.qws.link.entity.ReqCheckInfo;
 import com.qws.link.entity.ReqHeader;
 import com.qws.link.entity.ReqRemoteUpgrade;
 import com.qws.link.message.fm.FMMessage;
 import com.qws.link.message.gb.GBMessage;
 import com.qws.link.message.base.LinkMessage;
 import com.qws.link.send.SendServer;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -46,21 +47,17 @@ public class LinkController {
     }
 
 
-    @PostMapping("/upgrade")
+    @PostMapping("/sendUpgrade")
     public void sendUpgradeCommand(@RequestBody ReqRemoteUpgrade req) {
         RemoteUpgradePacket remoteUpgradePacket = new RemoteUpgradePacket();
         BeanUtils.copyProperties(req, remoteUpgradePacket);
         for (ReqHeader reqHeader : req.getReqHeaders()) {
             String code = reqHeader.getVin() == null ? reqHeader.getSn() : reqHeader.getVin();
             //命令的主动发起方 为0xfe
-            if (StringUtils.isNotBlank(reqHeader.getMixUrl())) {
-                remoteUpgradePacket.setUrl(reqHeader.getMixUrl());
-            } else {
                 remoteUpgradePacket.setUrl(req.getUrl());
-            }
             // 默认循环遍历
             try {
-                LinkMessage linkMessage = message2bytes(remoteUpgradePacket, code);
+                LinkMessage linkMessage = message2bytes(remoteUpgradePacket, code,0x82);
                 SendServer.send(code, linkMessage);
             } catch (Exception e) {
                 logger.error("发送命令错误, code :{},exception:{}", code, e);
@@ -69,11 +66,30 @@ public class LinkController {
         }
     }
 
-    private LinkMessage message2bytes(BasePacket basePacket, String code) throws Exception {
+
+    @PostMapping("/sendCheckInfo")
+    public void sendCheckInfo(@RequestBody ReqCheckInfo req) {
+        FMCheckPacket fmCheckPacket = new FMCheckPacket();
+        BeanUtils.copyProperties(req, fmCheckPacket);
+        for (ReqHeader reqHeader : req.getReqHeaders()) {
+            String code = reqHeader.getVin() == null ? reqHeader.getSn() : reqHeader.getVin();
+            // 默认循环遍历
+            try {
+                LinkMessage linkMessage = message2bytes(fmCheckPacket, code,0xB1);
+                SendServer.send(code, linkMessage);
+            } catch (Exception e) {
+                logger.error("发送命令错误, code :{},exception:{}", code, e);
+            }
+
+        }
+    }
+
+
+    private LinkMessage message2bytes(BasePacket basePacket, String code,int command) throws Exception {
         byte[] fmPack = basePacket.unbuild();
         Integer dataLength = fmPack.length >> 1;
         FMHeader fmHeader = new FMHeader("!!",
-                0x82,
+                command,
                 254,
                 code,
                 1,

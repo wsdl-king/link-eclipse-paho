@@ -1,4 +1,5 @@
 package com.qws.link.check;
+import com.alibaba.fastjson.JSON;
 import com.qws.link.ByteUtils;
 import com.qws.link.base.ByteArrayBuf;
 import com.qws.link.base.pakcet.FMPacket;
@@ -94,5 +95,15 @@ public class FMCheckPacket  implements FMPacket, Serializable {
     @Override
     public Integer length() {
         return null;
+    }
+
+    public static void main(String[] args) {
+
+        FMCheckPacket fmCheckPacket = new FMCheckPacket();
+        fmCheckPacket.setDownTime(20181115114338L);
+        fmCheckPacket.setAttachLength(0);
+        fmCheckPacket.setCheckValue(1);
+        fmCheckPacket.setAttachValue("");
+        System.out.println(JSON.toJSONString(fmCheckPacket));
     }
 }

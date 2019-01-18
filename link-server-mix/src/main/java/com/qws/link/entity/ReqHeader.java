@@ -16,10 +16,6 @@ public class ReqHeader {
      */
     private String sn;
 
-    /**
-     * 升级的url
-     */
-    private String mixUrl;
 
     public ReqHeader() {
     }
@@ -45,11 +41,4 @@ public class ReqHeader {
         this.sn = sn;
     }
 
-    public String getMixUrl() {
-        return mixUrl;
-    }
-
-    public void setMixUrl(String mixUrl) {
-        this.mixUrl = mixUrl;
-    }
 }
