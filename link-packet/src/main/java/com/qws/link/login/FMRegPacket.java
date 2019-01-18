@@ -1,5 +1,6 @@
 package com.qws.link.login;
 
+import com.alibaba.fastjson.JSON;
 import com.qws.link.ByteUtils;
 import com.qws.link.base.ByteArrayBuf;
 import com.qws.link.base.header.FMHeader;
@@ -275,6 +276,9 @@ public class FMRegPacket implements FMPacket, Serializable {
         fmRegPacket.setfValue("qwer");
         fmRegPacket.setsLength(3);
         fmRegPacket.setsValue("abc");
+        fmRegPacket.setProFlag(1);
+        fmRegPacket.setSn("fm012345678901234");
+        fmRegPacket.setManufacturer("FMFM");
         fmRegPacket.setRunStatus(1);
         fmRegPacket.setAttachLength(2);
         fmRegPacket.setAttachValue("hh");
@@ -294,5 +298,7 @@ public class FMRegPacket implements FMPacket, Serializable {
 
         System.out.println(ByteUtils.asHex(bytes1));
 
+
+        System.out.println(JSON.toJSONString(fmRegPacket));
     }
 }
