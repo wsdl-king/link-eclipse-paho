@@ -87,7 +87,7 @@ public class LinkController {
 
     private LinkMessage message2bytes(BasePacket basePacket, String code,int command) throws Exception {
         byte[] fmPack = basePacket.unbuild();
-        Integer dataLength = fmPack.length >> 1;
+        Integer dataLength = fmPack.length;
         FMHeader fmHeader = new FMHeader("!!",
                 command,
                 254,

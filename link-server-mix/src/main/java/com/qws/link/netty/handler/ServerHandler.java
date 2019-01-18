@@ -13,6 +13,9 @@ import io.netty.util.AttributeKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * @author qiwenshuai
  * @note 这个应该是我用来处理业务逻辑的东东，不过之前呢， 我需要解码成我需要的bytebuf
@@ -40,8 +43,10 @@ public class ServerHandler extends SimpleChannelInboundHandler<LinkMessage> {
         //通道关闭的操作
         AttributeKey<Object> objectAttributeKey = AttributeKey.valueOf(String.valueOf(CHANNEL));
         ChannelAttr channelAttr = (ChannelAttr) ctx.channel().attr(objectAttributeKey).get();
-        String sn = channelAttr.getSn();
-        ChannelMap.removeChannel(sn);
+        if (channelAttr != null) {
+            String sn = channelAttr.getSn();
+            ChannelMap.removeChannel(sn);
+        }
         logger.info("close success,address is: {}", ctx.channel().localAddress());
     }
 
@@ -69,11 +74,19 @@ public class ServerHandler extends SimpleChannelInboundHandler<LinkMessage> {
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, LinkMessage msg) {
         MessageHolder messageHolder = SpringBeanUtils.getBean(MessageHolder.class);
-        messageHolder.messageArrived(1000L, msg, ctx.channel());
+        long timeMillis = System.currentTimeMillis();
+        String date = getStringDate(timeMillis);
+        logger.info("packet  schedule time is {}", date);
+        messageHolder.messageArrived(timeMillis,msg, ctx.channel());
     }
+
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
         logger.error("服务端处理出现错误{}", cause.getMessage());
+    }
+
+    private String getStringDate(long time) {
+        return new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new Date(time));
     }
 }

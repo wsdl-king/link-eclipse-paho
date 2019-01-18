@@ -32,8 +32,8 @@ public class NettyServer {
 
     private EventLoopGroup workGroup;
 
-    private static final int port = 8182;
-    private static final int MAX_FRAME_LENGTH = 1024 * 1024;  //最大长度
+    private static final int PORT = 8182;
+    private static final int MAX_FRAME_LENGTH = 1024;  //最大长度
     private static final int LENGTH_FIELD_OFFSET = 22;  //长度字段偏移字节数--依据国标
     private static final int LENGTH_FIELD_LENGTH = 2;  //长度字段所占的字节数--依据国标
     private static final int LENGTH_ADJUSTMENT = 1;//数据长度字段之后剩下包的字节数--依据国标BCC校验码
@@ -87,11 +87,11 @@ public class NettyServer {
                 .childOption(ChannelOption.SO_KEEPALIVE, true)
                 //接受客户端使用直接内存
                 .childOption(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT);
-        bootstrap.bind("192.168.88.152", port).addListener((ChannelFutureListener) channelFuture -> {
+        bootstrap.bind("192.168.88.152", PORT).addListener((ChannelFutureListener) channelFuture -> {
             if (channelFuture.isSuccess())
-                logger.info("服务端启动成功【" + IpUtils.getHost() + ":" + port + "】");
+                logger.info("服务端启动成功【" + IpUtils.getHost() + ":" + PORT + "】");
             else
-                logger.info("服务端启动失败【" + IpUtils.getHost() + ":" + port + "】");
+                logger.info("服务端启动失败【" + IpUtils.getHost() + ":" + PORT + "】");
         });
 
     }
@@ -124,7 +124,7 @@ public class NettyServer {
                 bossGroup.shutdownGracefully().sync();
                 workGroup.shutdownGracefully().sync();
             } catch (InterruptedException e) {
-                logger.info("服务端关闭资源失败【" + IpUtils.getHost() + ":" + port + "】");
+                logger.info("服务端关闭资源失败【" + IpUtils.getHost() + ":" + PORT + "】");
             }
         }
     }

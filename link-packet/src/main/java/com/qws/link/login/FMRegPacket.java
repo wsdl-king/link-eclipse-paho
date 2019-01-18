@@ -212,7 +212,7 @@ public class FMRegPacket implements FMPacket, Serializable {
         sValue = ByteUtils.getStringFromBytes(buf.readBytes(sLength));
         proFlag = ByteUtils.toInt(buf.readByte());
         sn = ByteUtils.getStringFromBytes(buf.readBytes(17));
-        manufacturer = ByteUtils.getStringFromBytes(buf.readBytes(20));
+        manufacturer = ByteUtils.getStringFromBytes(buf.readBytes(4));
         runStatus = ByteUtils.toInt(buf.readByte());
         attachLength = ByteUtils.toInt(buf.readByte());
         attachValue = ByteUtils.getStringFromBytes(buf.readBytes(attachLength));
@@ -266,7 +266,7 @@ public class FMRegPacket implements FMPacket, Serializable {
      * 登录报文示例
      */
     public static void main(String[] args) {
-        FMHeader fmHeader = new FMHeader("!!", 1, 254, "FM-12345678901234", 1, 58);
+        FMHeader fmHeader = new FMHeader("!!", 1, 254, "FM-12345678901234", 1, 80);
         FMRegPacket fmRegPacket = new FMRegPacket();
         fmRegPacket.setUploadTime(20181115114338L);
         fmRegPacket.setLoginSnArg(65530);
@@ -284,7 +284,7 @@ public class FMRegPacket implements FMPacket, Serializable {
         fmRegPacket.setAttachValue("hh");
         byte[] packetBytes = fmRegPacket.unbuild();
         String p = ByteUtils.asHex(packetBytes);
-
+        System.out.println(p.length()/2);
         byte[] headerBytes = fmHeader.unbuild();
         byte bcc = CheckCode.mathParity(headerBytes, packetBytes);
         String h = ByteUtils.asHex(headerBytes);

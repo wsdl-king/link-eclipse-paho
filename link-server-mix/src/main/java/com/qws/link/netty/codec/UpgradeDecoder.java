@@ -40,6 +40,11 @@ public class UpgradeDecoder extends LengthFieldBasedFrameDecoder {
     protected Object decode(ChannelHandlerContext ctx, ByteBuf in) throws Exception {
         //1 调用父类(LengthFieldBasedFrameDecoder)方法:
         // 此处netty已经直接为我们进行了规定长度解码,直接返回给我需要的byte[]就OK了
+        int size = in.readableBytes();
+        byte[] bytes2 = new byte[size];
+        in.slice().readBytes(bytes2);
+        String original = ByteUtils.asHex(bytes2);
+        logger.info("receive original-packet:{}", original);
         ByteBuf frame = (ByteBuf) super.decode(ctx, in);
         if (frame == null) {
             return null;
@@ -51,7 +56,10 @@ public class UpgradeDecoder extends LengthFieldBasedFrameDecoder {
         FMHeader fmHeader = (FMHeader) message.getBaseHeader();
         String msg = "receive:" + ByteUtils.asHex(bytes);
         packetLog.info(FMVINMarkerFactory.getMarker(fmHeader.getSn()), msg);
-        return  message;
+        if (logger.isDebugEnabled()) {
+            logger.debug("receive decoder-packet {}", msg);
+        }
+        return message;
     }
 
     @Override
@@ -59,5 +67,7 @@ public class UpgradeDecoder extends LengthFieldBasedFrameDecoder {
         //解码出错在当前捕获,然后super.exceptionCaught(ctx,cause) 到下一层的ChannelInboundHandler
         // 这里的bytebuf在上一层是被释放的
         logger.error("解码出现错误{}", cause.getMessage());
+        //我选择直接关闭这个通道
+        ctx.channel().close();
     }
 }
