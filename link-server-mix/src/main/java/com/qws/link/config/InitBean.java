@@ -1,47 +1,34 @@
 package com.qws.link.config;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
 /**
  * @author qiwenshuai
- * @note
+ * @note 外部配置
  * @since 19-1-5 15:32 by jdk 1.8
  */
+@Component
 public class InitBean {
 
-    private int port ;
-
-    private String serverName ;
-
-    private boolean keepalive ;
-
-    private boolean reuseaddr ;
-
-    private boolean tcpNodelay ;
-
-    private int backlog ;
-
-    private  int  sndbuf ;
-
-    private int revbuf ;
-
-    private int heart ;
-
-    private boolean ssl ;
-
-    private String jksFile;
-
-    private String jksStorePassword;
-
-    private String jksCertificatePassword;
-
-
-    private int  initalDelay ;
-
-    private  int period ;
-
+    @Value("${activelink.port}")
+    private int port;
+    @Value("${activelink.keepalive}")
+    private boolean keepalive;
+    @Value("${activelink.reuseaddr}")
+    private boolean reuseaddr;
+    @Value("${activelink.tcpNodelay}")
+    private boolean tcpNodelay;
+    @Value("${activelink.backlog}")
+    private int backlog;
+    @Value("${activelink.sndbuf}")
+    private int sndbuf;
+    @Value("${activelink.revbuf}")
+    private int revbuf;
+    @Value("${activelink.bossThread}")
     private int bossThread;
-
+    @Value("${activelink.workThread}")
     private int workThread;
-
 
     public int getPort() {
         return port;
@@ -49,14 +36,6 @@ public class InitBean {
 
     public void setPort(int port) {
         this.port = port;
-    }
-
-    public String getServerName() {
-        return serverName;
-    }
-
-    public void setServerName(String serverName) {
-        this.serverName = serverName;
     }
 
     public boolean isKeepalive() {
@@ -105,62 +84,6 @@ public class InitBean {
 
     public void setRevbuf(int revbuf) {
         this.revbuf = revbuf;
-    }
-
-    public int getHeart() {
-        return heart;
-    }
-
-    public void setHeart(int heart) {
-        this.heart = heart;
-    }
-
-    public boolean isSsl() {
-        return ssl;
-    }
-
-    public void setSsl(boolean ssl) {
-        this.ssl = ssl;
-    }
-
-    public String getJksFile() {
-        return jksFile;
-    }
-
-    public void setJksFile(String jksFile) {
-        this.jksFile = jksFile;
-    }
-
-    public String getJksStorePassword() {
-        return jksStorePassword;
-    }
-
-    public void setJksStorePassword(String jksStorePassword) {
-        this.jksStorePassword = jksStorePassword;
-    }
-
-    public String getJksCertificatePassword() {
-        return jksCertificatePassword;
-    }
-
-    public void setJksCertificatePassword(String jksCertificatePassword) {
-        this.jksCertificatePassword = jksCertificatePassword;
-    }
-
-    public int getInitalDelay() {
-        return initalDelay;
-    }
-
-    public void setInitalDelay(int initalDelay) {
-        this.initalDelay = initalDelay;
-    }
-
-    public int getPeriod() {
-        return period;
-    }
-
-    public void setPeriod(int period) {
-        this.period = period;
     }
 
     public int getBossThread() {

@@ -13,6 +13,7 @@ public class InitServer {
     NettyServer nettyServer;
 
 
+
     public void open() {
         nettyServer.initNetty();
     }

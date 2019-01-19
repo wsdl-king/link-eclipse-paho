@@ -1,6 +1,7 @@
 package com.qws.link.netty.server;
 
 import com.qws.link.common.IpUtils;
+import com.qws.link.config.InitBean;
 import com.qws.link.netty.codec.UpgradeEncoder;
 import com.qws.link.netty.handler.ServerHandler;
 import com.qws.link.netty.codec.UpgradeDecoder;
@@ -13,6 +14,7 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.timeout.IdleStateHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.concurrent.ThreadFactory;
@@ -26,13 +28,17 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Component
 public class NettyServer {
 
+
     private Logger logger = LoggerFactory.getLogger(NettyServer.class);
+
+    @Autowired
+    InitBean initBean;
+
 
     private EventLoopGroup bossGroup;
 
     private EventLoopGroup workGroup;
 
-    private static final int PORT = 8182;
     private static final int MAX_FRAME_LENGTH = 1024;  //最大长度
     private static final int LENGTH_FIELD_OFFSET = 22;  //长度字段偏移字节数--依据国标
     private static final int LENGTH_FIELD_LENGTH = 2;  //长度字段所占的字节数--依据国标
@@ -56,14 +62,14 @@ public class NettyServer {
     private void initServer() {
         // 启动辅助类
         ServerBootstrap bootstrap = new ServerBootstrap();
-        bossGroup = new NioEventLoopGroup(2, new ThreadFactory() {
+        bossGroup = new NioEventLoopGroup(initBean.getBossThread(), new ThreadFactory() {
             private AtomicInteger index = new AtomicInteger(0);
 
             public Thread newThread(Runnable r) {
                 return new Thread(r, "BOSS_" + index.incrementAndGet());
             }
         });
-        workGroup = new NioEventLoopGroup(4, new ThreadFactory() {
+        workGroup = new NioEventLoopGroup(initBean.getWorkThread(), new ThreadFactory() {
             private AtomicInteger index = new AtomicInteger(0);
 
             public Thread newThread(Runnable r) {
@@ -73,25 +79,25 @@ public class NettyServer {
         //记住 child* 的方法都是操作在子的 Channel，被 ServerChannel 管理。
         bootstrap.group(bossGroup, workGroup)
                 .channel(NioServerSocketChannel.class)
-                .option(ChannelOption.SO_REUSEADDR, true)
-                .option(ChannelOption.SO_BACKLOG, 1024)//设置TCP缓冲区
+                .option(ChannelOption.SO_REUSEADDR, initBean.isReuseaddr())
+                .option(ChannelOption.SO_BACKLOG, initBean.getBacklog())//设置TCP缓冲区
                 //服务端发送使用直接内存
                 .option(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT)
-                .option(ChannelOption.SO_RCVBUF, 1024 * 1024) // 设置接受数据的缓存大小
+                .option(ChannelOption.SO_RCVBUF, initBean.getRevbuf()) // 设置接受数据的缓存大小
                 .childHandler(new ChannelInitializer<SocketChannel>() {
                     protected void initChannel(SocketChannel ch) throws Exception {
                         initHandler(ch.pipeline());
                     }
                 })
-                .childOption(ChannelOption.TCP_NODELAY, true)
-                .childOption(ChannelOption.SO_KEEPALIVE, true)
+                .childOption(ChannelOption.TCP_NODELAY, initBean.isTcpNodelay())
+                .childOption(ChannelOption.SO_KEEPALIVE, initBean.isKeepalive())
                 //接受客户端使用直接内存
                 .childOption(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT);
-        bootstrap.bind("192.168.88.152", PORT).addListener((ChannelFutureListener) channelFuture -> {
+        bootstrap.bind("192.168.88.152", initBean.getPort()).addListener((ChannelFutureListener) channelFuture -> {
             if (channelFuture.isSuccess())
-                logger.info("服务端启动成功【" + IpUtils.getHost() + ":" + PORT + "】");
+                logger.info("服务端启动成功【" + IpUtils.getHost() + ":" + initBean.getPort() + "】");
             else
-                logger.info("服务端启动失败【" + IpUtils.getHost() + ":" + PORT + "】");
+                logger.info("服务端启动失败【" + IpUtils.getHost() + ":" + initBean.getPort() + "】");
         });
 
     }
@@ -124,7 +130,7 @@ public class NettyServer {
                 bossGroup.shutdownGracefully().sync();
                 workGroup.shutdownGracefully().sync();
             } catch (InterruptedException e) {
-                logger.info("服务端关闭资源失败【" + IpUtils.getHost() + ":" + PORT + "】");
+                logger.info("服务端关闭资源失败【" + IpUtils.getHost() + ":" + initBean.getPort() + "】");
             }
         }
     }
